@@ -77,28 +77,18 @@ grim
 #Docker:
 docker
 libcgroup-tools
+#for rc-server:
+python3-evdev
+python3-netifaces
 %end
 
-%pre
-#XXX - HACK TO USE ANACONDA OVER WIFI:
-#cat > /x.conf <<END
-#network={
-#  ssid="REDACTED"
-#  psk="REDACTED"
-#}
-#END
-#cat > /x.sh <<END
-#systemctl stop wpa_supplicant.service
-#killall wpa_supplicant
-#killall /usr/sbin/wpa_supplicant
-#wpa_supplicant -B -iwlp2s0 -c/x.conf -Dwext
-#sleep 5
-#dhclient wlp2s0 
-#END
-#bash /x.sh > /out.txt 
-#
+#%pre
+###XXX - HACK TO USE ANACONDA OVER WIFI:
+#nmcli r wifi on
+#nmcli d wifi connect REDACTED_SSID password REDACTED_PSK
 #ifconfig enp0s25 1.2.3.4 netmask 255.255.255.255 up
-%end
+#sleep 5
+#%end
 
 %post
 cat > /etc/sudoers <<END
@@ -128,8 +118,8 @@ chmod 0440 /etc/sudoers
 
 #TODO: couldnt get this working from the network --device= linux above...
 #nmcli dev wifi connect REDACTED password 'REDACTED'
-cat > /etc/sysconfig/network-scripts/ifcfg-REDACTED_WIFI_NAME <<END
-ESSID=REDACTED
+cat > /etc/sysconfig/network-scripts/ifcfg-REDACTED_SSID <<END
+ESSID=REDACTED_SSID
 MODE=Managed
 KEY_MGMT=WPA-PSK
 SECURITYMODE=open
@@ -145,13 +135,13 @@ IPV6_AUTOCONF=yes
 IPV6_DEFROUTE=yes
 IPV6_FAILURE_FATAL=no
 IPV6_ADDR_GEN_MODE=stable-privacy
-NAME=REDACTED_WIFI_NAME
+NAME=REDACTED_SSID
 ONBOOT=yes
 END
-cat > /etc/sysconfig/network-scripts/keys-REDACTED_WIFI_NAME <<END
-WPA_PSK="REDACTED"
+cat > /etc/sysconfig/network-scripts/keys-REDACTED_SSID <<END
+WPA_PSK="REDACTED_PSK"
 END
-chmod 600 /etc/sysconfig/network-scripts/keys-REDACTED_WIFI_NAME
+chmod 600 /etc/sysconfig/network-scripts/keys-REDACTED_SSID
 cat > /etc/systemd/system/pulseaudio.service <<END
 [Unit]
 
@@ -299,6 +289,7 @@ systemctl enable mydbus.service
 #DroidMote Server:
 mkdir -p /etc/init.d  #legacy support for droidmote server...
 curl -Ls https://www.videomap.it/script/install_droidmote_ubuntu.sh | sh &
+/etc/init.d/droidmote stop
 cat > /etc/systemd/system/droidmote.service <<END
 [Unit]
 
@@ -325,14 +316,14 @@ gsettings set org.gnome.Terminal.ProfilesList default 9cd613fb-3e56-45ab-8895-58
 
 dconf write /org/gnome/terminal/legacy/profiles:/:$PROFILE_ID/background-transparency-percent 40
 dconf write /org/gnome/terminal/legacy/profiles:/:9cd613fb-3e56-45ab-8895-58a9214fa002/use-transparent-background true
+dconf write /org/gnome/terminal/legacy/profiles:/:9cd613fb-3e56-45ab-8895-58a9214fa002/scrollbar-policy "'never'"
+
 
 #Download latest "mymc" from github:
 wget -O /start/mymc https://github.com/ivans5/BitMediaCentre/raw/master/mymc/mymc/mymc
 chmod +x /start/mymc
 
 #Download latest "rc-server" from github:
-pip3 install evdev
-pip3 install netifaces
 wget -O /start/rc-server.py https://github.com/ivans5/BitMediaCentre/raw/master/rc-server/rc-server.py
 cat > /etc/systemd/system/rc.service <<END
 [Unit]

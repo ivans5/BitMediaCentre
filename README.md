@@ -31,7 +31,7 @@ Simple Media Centre PC Build Using Fedora Kickstart
 ## Installation Steps:
 
 1. Install grub to a USB stick
-2. Copy the kickstart file, and the `netinst` fedora iso (eg. Fedora-Server-netinst-bleh.iso) to the USB drive
+2. Copy the kickstart file, and the `netinst` fedora iso (eg. Fedora-Server-netinst-x86_64-32-1.6.iso) to the USB drive
 3. Edit the kickstart:
   - wifi (search for "REDACTED")
   - verify hard drive selection
@@ -41,9 +41,9 @@ Simple Media Centre PC Build Using Fedora Kickstart
 ```
 menuentry "bitmediacentre.ks" {
         set root='(hd0,msdos1)'
-        set isofile='(hd0,msdos1)/Fedora-Server-netinst-x86_64-31-1.9.iso'
+        set isofile='(hd0,msdos1)/Fedora-Server-netinst-x86_64-32-1.6.iso'
         loopback loop $isofile
-        linux (loop)/isolinux/vmlinuz inst.stage2=hd:LABEL=YourLabel:/Fedora-Server-netinst-x86_64-31-1.9.iso nomodeset inst.ks=hd:LABEL=YourLabel:/bitmediacentre.ks
+        linux (loop)/isolinux/vmlinuz inst.stage2=hd:LABEL=YourLabel:/Fedora-Server-netinst-x86_64-32-1.6.iso nomodeset inst.ks=hd:LABEL=YourLabel:/bitmediacentre.ks
         initrd (loop)/isolinux/initrd.img
 }
 ```
