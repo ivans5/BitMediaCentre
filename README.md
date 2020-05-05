@@ -3,7 +3,7 @@ Simple Media Centre PC Build Using Fedora Kickstart
 
 
 
-##Features:
+## Features:
 
   * Wayland-only system with Sway 1.x compositor
 
@@ -11,7 +11,7 @@ Simple Media Centre PC Build Using Fedora Kickstart
 
   * Simple "Commander"-style app for managing media content
 
-![mymc-mpv.png](mymc-mpv.png) ![mymc-youtube.png](mymc-youtube.png)
+![mymc-mpv.png](mymc-mpv.png) ![mymc-youtube-dl.png](mymc-youtube-dl.png)
 
 ### Optional Features (These need to be enabled in the kickstart file):
   * Remote Control Android App:
@@ -24,7 +24,7 @@ Simple Media Centre PC Build Using Fedora Kickstart
 
   * Droidmote Remote control app is also supported! (Unrelated to this project, it can be found at the Google play store)
 
-##Installation Steps:
+## Installation Steps:
 
 1. Install grub to a USB stick
 2. Copy the kickstart file, and the `netinst` fedora iso (eg. Fedora-Server-netinst-bleh.iso) to the USB drive
