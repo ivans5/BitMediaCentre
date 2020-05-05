@@ -1,8 +1,8 @@
 install
-url --url="http://mirror.csclub.uwaterloo.ca/fedora/linux/releases/31/Everything/x86_64/os/"
-repo --name=base --baseurl=http://mirror.csclub.uwaterloo.ca/fedora/linux/releases/31/Everything/x86_64/os/
-repo --name=updates-released-f31 --baseurl=http://mirror.csclub.uwaterloo.ca/fedora/linux/updates/31/Everything/x86_64/
-#repo --name=testing-released-f31 --baseurl=http://mirror.csclub.uwaterloo.ca/fedora/linux/updates/testing/31/Everything/x86_64/
+url --url="http://mirror.csclub.uwaterloo.ca/fedora/linux/releases/32/Everything/x86_64/os/"
+repo --name=base --baseurl=http://mirror.csclub.uwaterloo.ca/fedora/linux/releases/32/Everything/x86_64/os/
+repo --name=updates-released-f32 --baseurl=http://mirror.csclub.uwaterloo.ca/fedora/linux/updates/32/Everything/x86_64/
+#repo --name=testing-released-f32 --baseurl=http://mirror.csclub.uwaterloo.ca/fedora/linux/updates/testing/32/Everything/x86_64/
 repo --name=rpmfusion-free --baseurl=http://download1.rpmfusion.org/free/fedora/releases/$releasever/Everything/$basearch/os
 repo --name=rpmfusion-nonfree --baseurl=http://download1.rpmfusion.org/nonfree/fedora/releases/$releasever/Everything/$basearch/os/
 repo --name=rpmfusion-free-updates --baseurl=http://download1.rpmfusion.org/free/fedora/updates/$releasever/$basearch

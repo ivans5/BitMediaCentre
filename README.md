@@ -9,9 +9,13 @@ Simple Media Centre PC Build Using Fedora Kickstart
 
   * RPMFusion repository (for mpv, etc)
 
-  * Simple "Commander"-style app for managing media content
+  * Simple "Commander"-style app for managing media content:
 
-![mymc-mpv.png](mymc-mpv.png) ![mymc-youtube-dl.png](mymc-youtube-dl.png)
+![mymc-mpv.png](mymc-mpv.png) 
+
+
+
+![mymc-youtube-dl.png](mymc-youtube-dl.png)
 
 ### Optional Features (These need to be enabled in the kickstart file):
   * Remote Control Android App:
