@@ -43,6 +43,7 @@ wget
 tar
 -vim-minimal
 vim
+tree
 w3m
 aria2
 youtube-dl
@@ -120,7 +121,7 @@ chmod 0440 /etc/sudoers
 #GRUB_DEFAULT=saved
 #GRUB_DISABLE_SUBMENU=true
 #GRUB_TERMINAL_OUTPUT="console"
-#GRUB_CMDLINE_LINUX="video=HDMI-A-1:d video=DP-1:1920x1080@60+32"
+#GRUB_CMDLINE_LINUX="video=HDMI-A-1:d video=DP-1:1920x1080@60+32 systemd.unified_cgroup_hierarchy=0"
 #GRUB_DISABLE_RECOVERY="true"
 #END
 #grub2-mkconfig > /boot/grub2/grub.cfg
@@ -237,7 +238,7 @@ Type=oneshot
 EnvironmentFile=/env.sh
 #ExecStart=/bin/terminology --fullscreen --theme=black --login=true --font=ter-x32b.pcf --visual-bell=false --exec 'cd /start && /bin/mc'
 #ExecStart=/usr/bin/gnome-terminal --zoom=3.0 --maximize --full-screen --hide-menubar -- /home/pcuser/tvision.new3/demo/demo
-ExecStart=/usr/bin/gnome-terminal --zoom=3.0 --hide-menubar -- /home/pcuser/tvision.new3/demo/demo
+ExecStart=/usr/bin/gnome-terminal --zoom=3.0 --hide-menubar -- /start/mymc
 WorkingDirectory=/home/pcuser
 END
 systemctl enable terminal.timer
@@ -325,7 +326,30 @@ gsettings set org.gnome.Terminal.ProfilesList default 9cd613fb-3e56-45ab-8895-58
 dconf write /org/gnome/terminal/legacy/profiles:/:$PROFILE_ID/background-transparency-percent 40
 dconf write /org/gnome/terminal/legacy/profiles:/:9cd613fb-3e56-45ab-8895-58a9214fa002/use-transparent-background true
 
-#ENABLE OPTIONAL FEATURES HERE:
-systemctl enable droidmote.service
+#Download latest "mymc" from github:
+wget -O /start/mymc https://github.com/ivans5/BitMediaCentre/raw/master/mymc/mymc/mymc
+chmod +x /start/mymc
+
+#Download latest "rc-server" from github:
+pip3 install evdev
+pip3 install netifaces
+wget -O /start/rc-server.py https://github.com/ivans5/BitMediaCentre/raw/master/rc-server/rc-server.py
+cat > /etc/systemd/system/rc.service <<END
+[Unit]
+After=network-online.target
+
+[Service]
+ExecStart=/bin/python3 /start/rc-server.py
+
+[Install]
+WantedBy=graphical.target
+END
+
+#Dont kill user processes:
+echo KillUserProcesses=no >> /etc/systemd/logind.conf
+
+#XXX - ENABLE OPTIONAL FEATURES HERE:
+#systemctl enable droidmote.service
+#systemctl enable rc.service
 %end
 
