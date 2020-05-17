@@ -82,8 +82,8 @@ python3-evdev
 python3-netifaces
 %end
 
-#%pre
 ###XXX - HACK TO USE ANACONDA OVER WIFI:
+#%pre
 #nmcli r wifi on
 #nmcli d wifi connect REDACTED_SSID password REDACTED_PSK
 #ifconfig enp0s25 1.2.3.4 netmask 255.255.255.255 up
@@ -168,6 +168,7 @@ END
 systemctl set-default graphical.target
 systemctl disable accounts-daemon.service
 systemctl disable lightdm.service
+systemctl disable firewalld.service
 systemctl enable compositor.service
 systemctl enable pulseaudio.service
 
@@ -193,6 +194,7 @@ XDG_RUNTIME_DIR=/tmp
 XDG_CONFIG_HOME=/
 DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-ZcOrhvdyeA,guid=4236f3efbf061cee0b6776865b8c7190
 WLC_XWAYLAND=0
+K3S_NODE_TOKEN=K10400cd93f1c41a47569f0a205ce803ecb5cc498edee1f4a2e92e5d908565140a9::server:35abd290baba3c67f91596aed12a210d
 END
 
 #TODO: delete this:
@@ -288,8 +290,10 @@ systemctl enable mydbus.service
 
 #DroidMote Server:
 mkdir -p /etc/init.d  #legacy support for droidmote server...
-curl -Ls https://www.videomap.it/script/install_droidmote_ubuntu.sh | sh &
+curl -Ls https://www.videomap.it/script/install_droidmote_ubuntu.sh | sh 
+sleep 5
 /etc/init.d/droidmote stop
+killall droidmote  #it blocks the automation...
 cat > /etc/systemd/system/droidmote.service <<END
 [Unit]
 
@@ -339,8 +343,86 @@ END
 #Dont kill user processes:
 echo KillUserProcesses=no >> /etc/systemd/logind.conf
 
+#Install optional k3s-agent:
+wget -O /start/k3s https://github.com/rancher/k3s/releases/download/v1.17.5%2Bk3s1/k3s
+chmod +x /start/k3s
+cat > /etc/systemd/system/k3s-agent.service <<END
+[Unit]
+After=generate-machine-id-and-keypair.service
+
+[Service]
+ExecStart=/bin/bash -c '/start/k3s agent --server https://api.bitmediacentre.ca:6443 \
+	--token \${K3S_NODE_TOKEN} \
+	--node-name "bitmediacentre-\$(cat /start/my-machine-id)" \
+        --node-taint "key=value:NoSchedule" \
+	--node-label "machine-id=\$(cat /start/my-machine-id)" \
+	--node-label "publickeya=\$(cat /start/public_key.der.hexdump.aa)" \
+	--node-label "publickeyb=\$(cat /start/public_key.der.hexdump.ab)" \
+	--node-label "publickeyc=\$(cat /start/public_key.der.hexdump.ac)" \
+	--node-label "publickeyd=\$(cat /start/public_key.der.hexdump.ad)" \
+	--node-label "publickeye=\$(cat /start/public_key.der.hexdump.ae)" \
+	--node-label "publickeyf=\$(cat /start/public_key.der.hexdump.af)"'
+CPUShares=1500
+EnvironmentFile=/env.sh
+
+[Install]
+WantedBy=graphical.target
+END
+
+#Install machine-id and keypair generator:
+cat > /start/generate-machine-id-and-keypair.sh <<END
+#!/bin/bash
+#TODO: set working directory in systemd unit...
+set -e
+
+if [ ! -f /start/my-machine-id ] || [ ! -f /start/private_key.pem ] || [ ! -f /start/public_key.der ]; then
+
+    rm -fv /start/my-machine-id /start/private_key.pem /start/public_key.der* 
+
+    python -c 'import random;print ("".join(random.choice("ABCDEFGHJKMNPQRTUVWXY346789") for _ in range(6)))' > /start/my-machine-id
+    
+    # generate a 2048-bit RSA private key
+    openssl genrsa -out /start/private_key.pem 1024
+    chmod 644 /start/private_key.pem
+    
+    # convert private Key to PKCS#8 format (so Java can read it)
+    #openssl pkcs8 -topk8 -inform PEM -outform DER -in private_key.pem \
+    #    -out /start/private_key.der -nocrypt
+    
+    # output public key portion in DER format (so Java can read it)
+    openssl rsa -in /start/private_key.pem -pubout -outform DER -out /start/public_key.der
+    
+    #Unfortunately there is a 63 char limit on labels, and i cant figure out how to use annotations instead,
+    #Also, base64 encoding cannot be used for label values :(
+
+    #hexdump dat der for user in node label
+    python -c 'print ("".join("{:02x}".format(b) for b in open("/start/public_key.der","rb").read()), end="")' > /start/public_key.der.hexdump
+    split -b62 /start/public_key.der.hexdump /start/public_key.der.hexdump.
+
+else
+    echo keys already generated, skipping
+fi
+END
+
+cat > /etc/systemd/system/generate-machine-id-and-keypair.service <<END
+[Unit]
+Before=terminal.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /start/generate-machine-id-and-keypair.sh
+EnvironmentFile=/env.sh
+CPUShares=1500
+
+[Install]
+WantedBy=graphical.target
+END
+systemctl enable generate-machine-id-and-keypair.service
+
+
 #XXX - ENABLE OPTIONAL FEATURES HERE:
 #systemctl enable droidmote.service
 #systemctl enable rc.service
+#systemctl enable k3s-agent.service
 %end
 
