@@ -20,11 +20,12 @@ Simple Media Centre PC Build Using Fedora Kickstart
 ### Optional Features (These need to be enabled in the kickstart file):
   * Remote Control Android App:
 
-![bmc-android-tab1.png](bmc-android-tab1.png)
+![Screenshot_20200517-074115.png](Screenshot_20200517-074115.png)
 
   * Launch new downloads by clicking on any `magnet` link whilst using the browser included in the app!
     
-![bmc-android-tab2.png](bmc-android-tab2.png)
+![Screenshot_20200517-134658.png](Screenshot_20200517-134658.png)
+*here, 200 response means that the pod was scheduled by the cloud service*
 
   * Droidmote Remote control app is also supported! (Unrelated to this project, it can be found at the Google play store)
 
