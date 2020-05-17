@@ -5,7 +5,7 @@ NOTE: This is a Fork of a Fork of Sergio Sigala's Turbo Vision Port, fixed to bu
 
 1.
 ```
-sudo dnf install autoconf automake gcc-c++ libtool ncurses-devel gpm-devel
+sudo dnf install autoconf automake gcc-c++ libtool ncurses-devel gpm-devel make
 ```
 
 2.

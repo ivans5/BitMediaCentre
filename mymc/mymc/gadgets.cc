@@ -69,7 +69,6 @@ void THeapView::update()
         }
 }
 
-
 long THeapView::heapSize()
 {
 	/* SS: changed */
@@ -114,7 +113,22 @@ long THeapView::heapSize()
         }
     return(total);
 #endif
-	strcpy(heapStr, "Hello world!");
+
+	//strcpy(heapStr, "Hello world!");
+	//XXX this runs once at startup ...
+	    char c[1000];
+    FILE *fptr;
+    if ((fptr = fopen("/start/my-machine-id", "r")) == NULL) {
+        //printf("Error! opening file");
+        // Program exits if file pointer returns NULL.
+        //exit(1);
+	strcpy(heapStr, "ID: UNKNOWN");
+    }
+
+    // reads text until newline is encountered
+    fscanf(fptr, "%[^\n]", c);
+    fclose(fptr);
+    sprintf(heapStr, "ID: %s", c);
 	return -1;
 }
 
