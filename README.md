@@ -22,7 +22,7 @@ Simple Media Centre PC Build Using Fedora Kickstart
 
 ![bmc-android-tab1.png](bmc-android-tab1.png)
 
-  * Launch new downloads by clicking on any `magnet` or `.torrent` link whilst using the browser included in the app!
+  * Launch new downloads by clicking on any `magnet` link whilst using the browser included in the app!
     
 ![bmc-android-tab2.png](bmc-android-tab2.png)
 
@@ -35,6 +35,7 @@ Simple Media Centre PC Build Using Fedora Kickstart
 3. Edit the kickstart:
   - wifi (search for "REDACTED")
   - verify hard drive selection
+  - timezone
   - enable optional features
   - any other customisation
 4. Edit the grub.cfg and add something like:

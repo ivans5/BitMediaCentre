@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-server
+  namespace: default
+  labels:
+    app: cloud-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloud-server
+  template:
+    metadata:
+      labels:
+        app: cloud-server
+    spec:
+      serviceAccount: cloud-server
+      containers:
+      - name: cloud-server
+        image: ivans3/cloud-server:latest
+        ports:
+        - containerPort: 8080

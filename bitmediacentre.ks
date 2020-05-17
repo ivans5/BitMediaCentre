@@ -14,7 +14,7 @@ auth --useshadow --enablemd5
 selinux --disabled
 firewall --disabled
 services --enabled=NetworkManager,sshd
-network --hostname=bitmediacentre
+network --hostname=BitMediaCentre
 eula --agreed
 ignoredisk --only-use=sda
 text
