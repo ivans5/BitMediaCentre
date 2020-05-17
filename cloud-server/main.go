@@ -129,8 +129,9 @@ func (clientPack *ClientPack) startDownload(rw http.ResponseWriter, req *http.Re
   newPod := apiv1.Pod{}
   newPod.ObjectMeta = metav1.ObjectMeta{Name: fmt.Sprintf("myaria2pod-%d",10000+rand.Intn(89999)), Namespace: newNamespace.ObjectMeta.Name} 
   hostPathTypeDirectory := (apiv1.HostPathType) ("Directory")  //so obnoxious !!
-  fmt.Println("YO!")
+  var myIdNumber int64 = 1000
   newPod.Spec = apiv1.PodSpec{
+          SecurityContext: &apiv1.PodSecurityContext{RunAsUser: &myIdNumber, RunAsGroup: &myIdNumber},
           DNSPolicy: "None",
           DNSConfig: &apiv1.PodDNSConfig{Nameservers: []string{"8.8.8.8","1.1.1.1"}},
           Tolerations: []apiv1.Toleration{{Key: "key", Value: "value", Effect: "NoSchedule"}},
