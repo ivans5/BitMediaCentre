@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.PlaceholderFragment">
+
+    <!--
+    <TextView
+        android:id="@+id/section_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/constraintLayout"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintTop_creator="1" />
+-->
+
+
+
+    <!-- e.KEY_ESC == 1 -->
+    <Button
+        android:id="@+id/esc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Esc"
+        android:background="@drawable/controls"
+        android:textAllCaps="false"
+        android:textColor="#E91E63"
+        android:textSize="12pt"
+        android:tag="1"
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintHorizontal_bias="0.15"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="137dp"
+        tools:layout_editor_absoluteY="26dp" />
+
+
+    <!-- e.KEY_F2 == 60 -->
+    <Button
+        android:id="@+id/f2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="F2"
+        android:background="@drawable/controls"
+        android:textAllCaps="false"
+        android:textColor="#E91E63"
+        android:textSize="12pt"
+        android:tag="60"
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="26dp"
+        tools:layout_editor_absoluteY="26dp" />
+
+    <!-- Alt-Y == e.KEY_LEFTALT(56) + e.KEY_Y(21) -->
+    <Button
+        android:id="@+id/alty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alt-Y"
+        android:background="@drawable/controls"
+        android:textAllCaps="false"
+        android:textColor="#E91E63"
+        android:textSize="12pt"
+        android:tag="56+21"
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="253dp"
+        tools:layout_editor_absoluteY="26dp" />
+
+
+    <!-- e.KEY_UP == 103 -->
+    <Button
+        android:id="@+id/up"
+        android:layout_width="307dp"
+        android:layout_height="100dp"
+        android:text="⬆"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="80dip"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/up"
+        android:tag="103"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0.3"
+        tools:layout_editor_absoluteY="284dp" />
+
+    <!-- e.KEY_DOWN == 108 -->
+    <Button
+        android:id="@+id/down"
+        android:layout_width="307dp"
+        android:layout_height="100dp"
+        android:text="⬇"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="80dip"
+        android:textStyle="bold"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/down"
+        android:tag="108"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0.6"
+        tools:layout_editor_absoluteY="401dp"
+        />
+
+
+    <!-- e.KEY_ENTER == 28 -->
+    <Button
+        android:id="@+id/enter"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:background="@drawable/enter"
+        android:text="⏎"
+        android:textAllCaps="false"
+        android:textColor="#000000"
+        android:textSize="24pt"
+        android:textStyle="bold"
+        android:tag="28"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.15"
+        app:layout_constraintVertical_bias="0.9"
+        tools:layout_editor_absoluteX="86dp"
+        tools:layout_editor_absoluteY="553dp" />
+
+    <!-- e.KEYS_SPACE == 57 -->
+    <Button
+        android:id="@+id/space"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:background="@drawable/space"
+        android:text="└┘"
+        android:textAllCaps="false"
+        android:textColor="#000000"
+        android:textSize="24pt"
+        android:textStyle="bold"
+        android:tag="57"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0.9"
+        tools:layout_editor_absoluteX="86dp"
+        tools:layout_editor_absoluteY="553dp" />
+
+    <!-- e.KEY_Q == 16 -->
+    <Button
+        android:id="@+id/q"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:background="@drawable/q"
+        android:text="q"
+        android:textAllCaps="false"
+        android:textColor="#000000"
+        android:textSize="24pt"
+        android:textStyle="bold"
+        android:tag="16"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintVertical_bias="0.9"
+        tools:layout_editor_absoluteX="226dp"
+        tools:layout_editor_absoluteY="553dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
