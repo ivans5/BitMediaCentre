@@ -10,9 +10,7 @@
         android:layout_marginTop="50dp"
         android:background="#00FFFFFF" />
 
-    <!-- TODO: clear keyboard afterwards -->
-    <!-- TODO: some history feature -->
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/et"
         android:text="https://html5test.com"
         android:background="#00000000"

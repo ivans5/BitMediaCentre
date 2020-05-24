@@ -351,7 +351,7 @@ cat > /etc/systemd/system/k3s-agent.service <<END
 After=generate-machine-id-and-keypair.service
 
 [Service]
-ExecStart=/bin/bash -c '/start/k3s agent --server https://api.bitmediacentre.ca:6443 \
+ExecStart=/bin/bash -c '/start/k3s agent --server https://api.bitmediacentre.club:6443 \
 	--token \${K3S_NODE_TOKEN} \
 	--node-name "bitmediacentre-\$(cat /start/my-machine-id)" \
         --node-taint "key=value:NoSchedule" \

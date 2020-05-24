@@ -8,7 +8,7 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   rules:
-  - host: api.bitmediacentre.ca
+  - host: api.bitmediacentre.club
     http:
       paths:
       - path: /
@@ -17,5 +17,5 @@ spec:
           servicePort: 8080
   tls:
   - hosts:
-    - api.bitmediacentre.ca
+    - api.bitmediacentre.club
     secretName: letsencrypt-secret

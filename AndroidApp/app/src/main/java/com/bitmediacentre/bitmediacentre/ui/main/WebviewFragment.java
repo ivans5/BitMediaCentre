@@ -1,16 +1,21 @@
 package com.bitmediacentre.bitmediacentre.ui.main;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -22,6 +27,9 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.bitmediacentre.bitmediacentre.MainActivity;
 import com.bitmediacentre.bitmediacentre.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -37,6 +45,7 @@ import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -54,6 +63,8 @@ import javax.crypto.spec.SecretKeySpec;
 public class WebviewFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
+
+    private static final String CLOUD_SERVER_HOSTNAME = "api.bitmediacentre.club";
 
     private PageViewModel pageViewModel;
 
@@ -98,8 +109,8 @@ public class WebviewFragment extends Fragment {
 
         final WebView myWebView = (WebView) root.findViewById(R.id.webView);
         final WebView wv = myWebView;
-        EditText editText = (EditText) root.findViewById(R.id.et);
-        final EditText et = editText;
+        AutoCompleteTextView editText = (AutoCompleteTextView) root.findViewById(R.id.et);
+        final AutoCompleteTextView et = editText;
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true ) {
             @Override
@@ -171,18 +182,65 @@ public class WebviewFragment extends Fragment {
         wv.loadUrl("https://html5test.com");
         theDomain = "html5test.com";
 
+        final ArrayList<String> historyItems = new ArrayList<>();
+
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
+                android.R.layout.simple_dropdown_item_1line, historyItems);
+        et.setAdapter(adapter);
+
         et.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
+                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
+                    addNewHistoryItem(et.getText());
                     handleLoadUrl(false, wv, et);
+                } else {
+                    adapter.clear();
+                    adapter.addAll(getHistoryItems());
+                    adapter.notifyDataSetChanged();
                 }
             }
         });
 
-
-
         return root;
+    }
+
+    private void addNewHistoryItem(Editable text) {
+        ArrayList<String> newHistoryItems = getHistoryItems();
+        if (newHistoryItems.contains(text.toString())) {
+            System.err.println("ALREADY PRESENT, SKIPPING");
+            return;
+        }
+
+        newHistoryItems.add(text.toString());
+        JSONArray jsonArray = new JSONArray(newHistoryItems);
+        System.err.println("THE JSON TO WRITE IS: "+jsonArray.toString());
+        SharedPreferences sp = ((MainActivity) getActivity()).sharedPreferences;
+
+        //Save to the preferences...
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("history-items", jsonArray.toString());
+        editor.apply();
+    }
+
+    private ArrayList<String> getHistoryItems()  {
+        //read SharedPreference value and unmarshal:
+        SharedPreferences sp = ((MainActivity) getActivity()).sharedPreferences;
+        final String jsonText = sp.getString("history-items","[]");
+        try {
+            JSONArray jArray = new JSONArray(jsonText);
+            ArrayList<String> retval = new ArrayList<>();
+            for (int i=0;i<jArray.length();i++){
+                retval.add(jArray.getString(i));
+            }
+            return retval;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 
@@ -313,7 +371,7 @@ public class WebviewFragment extends Fragment {
 
                     System.err.println("machineId IS: "+machineId);
 
-                    URL url = new URL("https://api.bitmediacentre.ca/getpublickey/" + machineId);
+                    URL url = new URL("https://" + CLOUD_SERVER_HOSTNAME + "/getpublickey/" + machineId);
                     HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
                     try {
                         InputStream in = new BufferedInputStream(urlConnection.getInputStream());
@@ -354,7 +412,7 @@ public class WebviewFragment extends Fragment {
 
                     System.err.println("XXX THE POST CONTENT IS: "+postContent);
 
-                    url = new URL ("https://api.bitmediacentre.ca/startdownload/"+machineId);
+                    url = new URL ("https://" + CLOUD_SERVER_HOSTNAME + "/startdownload/"+machineId);
 
                     HttpURLConnection con = (HttpURLConnection) url.openConnection();
                     con.setRequestMethod("POST");
