@@ -2,7 +2,7 @@
 After=network-online.target
 
 [Service]
-ExecStart=/bin/python3 /start/rc-server.py
+ExecStart=/bin/python3 /usr/start/rc-server.py
 
 [Install]
 WantedBy=graphical.target
