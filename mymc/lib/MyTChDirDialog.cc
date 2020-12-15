@@ -52,7 +52,7 @@ MyTChDirDialog::MyTChDirDialog( ushort opts, ushort histId ) :
     //insert( new TLabel( TRect( 2+1, 2, 17+1, 3 ), "Extensions", dirInput ));
 //    insert( new THistory( TRect( 30, 3, 33, 4 ), dirInput, histId ) );
     insert( new TStaticText( TRect( 2+2, 2, 17+2, 3 ), "Extensions:"));
-    insert( new TStaticText( TRect( 2+2, 3, 17+2, 4 ), "mkv,mp4"));
+    insert( new TStaticText( TRect( 2+2, 3, 17+2, 4 ), "mkv,mp4,avi"));
 
     TScrollBar *sb = new TScrollBar( TRect( 32+16, 6, 33+16, 16 ) );
     insert( sb );

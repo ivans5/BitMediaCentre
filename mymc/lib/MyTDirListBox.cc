@@ -86,7 +86,7 @@ int endsWithFoo( char *string )
   if( string != NULL )  {
     //return( strcmp(string, ".mkv") );
     //TODO: load this from the value of the "Extensions" TInputLine...
-    if(strcmp(string, ".mkv") == 0 || strcmp(string, ".mp4") == 0 )
+    if(strcmp(string, ".mkv") == 0 || strcmp(string, ".mp4") == 0 || strcmp(string, ".avi") == 0)
       return 0;
   }
 
@@ -131,7 +131,7 @@ std::list<dirent *> getListOfDirents(char *dir_)
                         memcpy(de_heap, de, sizeof(dirent));
 			sprintf(path, "%s%s", dir_, de->d_name);
 
-                        //XXX - is it a mkv/mp4 file:
+                        //XXX - is it a mkv/mp4/avi file:
 			if (stat(path, &s) == 0 && !S_ISDIR(s.st_mode) &&
                             endsWithFoo(de->d_name)==0 && 
 			    !aria2_file_exist(path))  {
