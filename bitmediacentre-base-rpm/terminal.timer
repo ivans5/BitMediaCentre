@@ -1,0 +1,9 @@
+[Unit]
+After=compositor.service
+
+[Timer]
+OnActiveSec=4s
+Unit=terminal.service
+
+[Install]
+WantedBy=graphical.target

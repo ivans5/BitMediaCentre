@@ -1,0 +1,8 @@
+[Unit]
+After=mydbus.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=/env.sh
+ExecStart=/usr/bin/gnome-terminal --zoom=3.0 --hide-menubar -- /start/mymc
+WorkingDirectory=/home/pcuser

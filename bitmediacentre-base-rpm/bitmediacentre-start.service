@@ -1,0 +1,10 @@
+[Unit]
+
+[Service]
+Type=oneshot
+ExecStartPre=chattr -i /
+ExecStart=/bin/sh -c "[ -d /start ] || { ln -s /var/start /start; ln -s /var/start/env.sh /env.sh; }"
+ExecStopPost=chattr +i /
+
+[Install]
+WantedBy=basic.target

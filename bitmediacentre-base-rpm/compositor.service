@@ -1,0 +1,9 @@
+[Unit]
+
+[Service]
+ExecStart=/bin/openvt -v -w -s -- su -m pcuser /bin/sh -c 'set -a;. /env.sh;exec /bin/sway'
+EnvironmentFile=/env.sh
+CPUShares=1500
+
+[Install]
+WantedBy=graphical.target

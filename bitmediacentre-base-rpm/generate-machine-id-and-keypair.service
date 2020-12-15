@@ -1,0 +1,11 @@
+[Unit]
+Before=terminal.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash /start/generate-machine-id-and-keypair.sh
+EnvironmentFile=/env.sh
+CPUShares=1500
+
+[Install]
+WantedBy=graphical.target

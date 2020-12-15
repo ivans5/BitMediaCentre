@@ -1,0 +1,10 @@
+[Unit]
+After=generate-machine-id-and-keypair.service
+
+[Service]
+ExecStart=/bin/bash -c '/start/k3s agent --server https://api.bitmediacentre.club:6443 	--token ${K3S_NODE_TOKEN} 	--node-name "bitmediacentre-$(cat /start/my-machine-id)"         --node-taint "key=value:NoSchedule" 	--node-label "machine-id=$(cat /start/my-machine-id)" 	--node-label "publickeya=$(cat /start/public_key.der.hexdump.aa)" 	--node-label "publickeyb=$(cat /start/public_key.der.hexdump.ab)" 	--node-label "publickeyc=$(cat /start/public_key.der.hexdump.ac)" 	--node-label "publickeyd=$(cat /start/public_key.der.hexdump.ad)" 	--node-label "publickeye=$(cat /start/public_key.der.hexdump.ae)" 	--node-label "publickeyf=$(cat /start/public_key.der.hexdump.af)"'
+CPUShares=1500
+EnvironmentFile=/env.sh
+
+[Install]
+WantedBy=graphical.target

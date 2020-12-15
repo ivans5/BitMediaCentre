@@ -1,0 +1,8 @@
+enable bitmediacentre-start.*
+enable compositor.*
+enable terminal.*
+enable mydbus.*
+enable k3s-agent.*
+enable generate-machine-id-and-keypair.*
+enable rc.*
+
