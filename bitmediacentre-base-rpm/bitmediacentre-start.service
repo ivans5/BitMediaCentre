@@ -3,7 +3,7 @@
 [Service]
 Type=oneshot
 ExecStartPre=chattr -i /
-ExecStart=/bin/sh -c "mkdir -p /var/start/; ln -s /usr/start/youtube /var/start/youtube; ln -s /usr/start/env.sh /env.sh; ln -s /var/start /start;"
+ExecStart=/bin/sh -c "[ -e /env.sh ] || ln -s /usr/start/env.sh /env.sh; [ -e /start ] || { mkdir -p /var/start/; ln -s /usr/start/youtube /var/start/youtube; ln -s /var/start /start; }"
 ExecStopPost=chattr +i /
 
 [Install]
