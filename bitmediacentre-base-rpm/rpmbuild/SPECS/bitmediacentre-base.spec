@@ -42,6 +42,7 @@ cp %{_pwd}/*.sh $RPM_BUILD_ROOT/usr/start/youtube
 cp %{_pwd}/../mymc/mymc/mymc $RPM_BUILD_ROOT/usr/start/bin/
 cp %{_pwd}/../rc-server/rc-server.py $RPM_BUILD_ROOT/usr/start/bin/
 cp %{_pwd}/env.sh $RPM_BUILD_ROOT/usr/start/
+cp %{_pwd}/generate-machine-id-and-keypair.sh $RPM_BUILD_ROOT/usr/start/bin/
 exit 0 #https://stackoverflow.com/questions/30317213/how-to-remove-pyo-anc-pyc-from-an-rpm
 
 %files
@@ -59,6 +60,7 @@ exit 0 #https://stackoverflow.com/questions/30317213/how-to-remove-pyo-anc-pyc-f
 /usr/start/youtube/*.sh
 /usr/start/bin/mymc
 /usr/start/bin/rc-server.py
+/usr/start/bin/generate-machine-id-and-keypair.sh
 /usr/start/env.sh
 
 %post
@@ -70,8 +72,3 @@ systemctl preset terminal.timer
 systemctl preset k3s-agent.service
 systemctl preset rc.service
 systemctl preset generate-machine-id-and-keypair.service
-#TODO: handle upgrade:
-mkdir -p /var/start
-ln -sf /usr/start/youtube /var/start/youtube
-ln -sf /usr/start/bin /var/start/bin
-ln -sf /usr/start/env.sh /var/start/
