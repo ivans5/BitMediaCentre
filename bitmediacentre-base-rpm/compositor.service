@@ -1,4 +1,5 @@
 [Unit]
+After=bitmediacentre-start.service
 
 [Service]
 ExecStart=/bin/openvt -v -w -s -- su -m pcuser /bin/sh -c 'set -a;. /env.sh;exec /bin/sway'
