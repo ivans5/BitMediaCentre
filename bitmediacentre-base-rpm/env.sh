@@ -1,4 +1,5 @@
 #HOME=???
+LANG=C.UTF-8
 XDG_RUNTIME_DIR=/tmp
 XDG_CONFIG_HOME=/
 DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-ZcOrhvdyeA,guid=4236f3efbf061cee0b6776865b8c7190
