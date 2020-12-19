@@ -76,3 +76,4 @@ systemctl preset terminal.timer
 systemctl preset k3s-agent.service
 systemctl preset rc.service
 systemctl preset generate-machine-id-and-keypair.service
+systemctl preset setup-gnome-terminal.service
