@@ -1,0 +1,10 @@
+[Unit]
+After=mydbus.service
+
+[Service]
+EnvironmentFile=/env.sh
+ExecStart=/bin/bash /usr/start/bin/setup-gnome-terminal.sh
+CPUShares=200000
+
+[Install]
+WantedBy=graphical.target

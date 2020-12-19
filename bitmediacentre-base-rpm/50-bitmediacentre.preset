@@ -5,4 +5,5 @@ enable mydbus.*
 enable k3s-agent.*
 enable generate-machine-id-and-keypair.*
 enable rc.*
+enable setup-gnome-terminal.*
 

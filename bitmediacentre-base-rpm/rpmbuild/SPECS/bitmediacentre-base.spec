@@ -37,12 +37,14 @@ cp %{_pwd}/mysway.config $RPM_BUILD_ROOT/etc/sway/config.d/
 cp %{_pwd}/mydbus.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/k3s-agent.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/generate-machine-id-and-keypair.service $RPM_BUILD_ROOT/etc/systemd/system/
+cp %{_pwd}/setup-gnome-terminal.sh $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/rc.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/*.sh $RPM_BUILD_ROOT/usr/start/youtube
 cp %{_pwd}/../mymc/mymc/mymc $RPM_BUILD_ROOT/usr/start/bin/
 cp %{_pwd}/../rc-server/rc-server.py $RPM_BUILD_ROOT/usr/start/bin/
 cp %{_pwd}/env.sh $RPM_BUILD_ROOT/usr/start/
 cp %{_pwd}/generate-machine-id-and-keypair.sh $RPM_BUILD_ROOT/usr/start/bin/
+cp %{_pwd}/setup-gnome-terminal.sh $RPM_BUILD_ROOT/usr/start/bin/
 exit 0 #https://stackoverflow.com/questions/30317213/how-to-remove-pyo-anc-pyc-from-an-rpm
 
 %files
@@ -56,11 +58,13 @@ exit 0 #https://stackoverflow.com/questions/30317213/how-to-remove-pyo-anc-pyc-f
 /etc/systemd/system/k3s-agent.service
 /etc/systemd/system/rc.service
 /etc/systemd/system/generate-machine-id-and-keypair.service
+/etc/systemd/system/setup-gnome-terminal.sh
 /etc/sway/config.d/mysway.config
 /usr/start/youtube/*.sh
 /usr/start/bin/mymc
 /usr/start/bin/rc-server.py
 /usr/start/bin/generate-machine-id-and-keypair.sh
+/usr/start/bin/setup-gnome-terminal.sh
 /usr/start/env.sh
 
 %post
