@@ -1,9 +1,8 @@
 [Unit]
 After=setup-gnome-terminal.service
 
-
 [Timer]
-OnActiveSec=4s
+OnActiveSec=8s
 Unit=terminal.service
 
 [Install]
