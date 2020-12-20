@@ -1,0 +1,9 @@
+[Unit]
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/pip3 install --upgrade youtube-dl
+
+[Install]
+WantedBy=graphical.target

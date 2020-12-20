@@ -38,6 +38,7 @@ cp %{_pwd}/mydbus.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/k3s-agent.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/generate-machine-id-and-keypair.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/setup-gnome-terminal.service $RPM_BUILD_ROOT/etc/systemd/system/
+cp %{_pwd}/install-upgrade-youtube-dl.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/rc.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/*.sh $RPM_BUILD_ROOT/usr/start/youtube
 cp %{_pwd}/../mymc/mymc/mymc $RPM_BUILD_ROOT/usr/start/bin/
@@ -59,6 +60,7 @@ exit 0 #https://stackoverflow.com/questions/30317213/how-to-remove-pyo-anc-pyc-f
 /etc/systemd/system/rc.service
 /etc/systemd/system/generate-machine-id-and-keypair.service
 /etc/systemd/system/setup-gnome-terminal.service
+/etc/systemd/system/install-upgrade-youtube-dl.service
 /etc/sway/config.d/mysway.config
 /usr/start/youtube/*.sh
 /usr/start/bin/mymc
@@ -77,3 +79,4 @@ systemctl preset k3s-agent.service
 systemctl preset rc.service
 systemctl preset generate-machine-id-and-keypair.service
 systemctl preset setup-gnome-terminal.service
+systemctl preset install-upgrade-youtube-dl.service
