@@ -71,7 +71,7 @@ exit 0 #https://stackoverflow.com/questions/30317213/how-to-remove-pyo-anc-pyc-f
 systemctl preset bitmediacentre-start.service
 systemctl preset compositor.service
 systemctl preset mydbus.service
-systemctl preset terminal.service
+#systemctl preset terminal.service
 systemctl preset terminal.timer
 systemctl preset k3s-agent.service
 systemctl preset rc.service

@@ -1,5 +1,6 @@
 [Unit]
-After=compositor.service
+After=setup-gnome-terminal.service
+
 
 [Timer]
 OnActiveSec=4s

@@ -1,5 +1,4 @@
 [Unit]
-After=setup-gnome-terminal.service
 
 [Service]
 Type=oneshot
