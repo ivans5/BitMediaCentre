@@ -1,6 +1,6 @@
 #HOME=???
 LANG=C.UTF-8
-XDG_RUNTIME_DIR=/tmp
+XDG_RUNTIME_DIR=/tmp/xdg_runtime_dir
 XDG_CONFIG_HOME=/var/start/
 DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-ZcOrhvdyeA,guid=4236f3efbf061cee0b6776865b8c7190
 WLC_XWAYLAND=0

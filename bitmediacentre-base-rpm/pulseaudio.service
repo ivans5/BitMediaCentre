@@ -1,7 +1,8 @@
 [Unit]
+After=bitmediacentre-start.service
 
 [Service]
-ExecStart=/usr/bin/pulseaudio --disallow-exit --exit-idle-time=-1
+ExecStart=/usr/bin/pulseaudio --disallow-exit --exit-idle-time=-1 --daemonize=no
 EnvironmentFile=/env.sh
 
 [Install]
