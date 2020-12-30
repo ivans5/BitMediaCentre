@@ -1,5 +1,5 @@
 [Unit]
-#Note: not sure After= is working properly here...
+#Note: not sure After= is working as intended here:
 After=setup-gnome-terminal.service
 
 [Timer]

@@ -15,3 +15,5 @@ dconf write /org/gnome/terminal/legacy/profiles:/:$PROFILE_ID/background-transpa
 dconf write /org/gnome/terminal/legacy/profiles:/:9cd613fb-3e56-45ab-8895-58a9214fa002/use-transparent-background true
 dconf write /org/gnome/terminal/legacy/profiles:/:9cd613fb-3e56-45ab-8895-58a9214fa002/scrollbar-policy "'never'"
 
+dconf write /org/gnome/terminal/legacy/profiles:/:9cd613fb-3e56-45ab-8895-58a9214fa002/use-system-font false
+
