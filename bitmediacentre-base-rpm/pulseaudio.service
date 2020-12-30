@@ -2,7 +2,11 @@
 After=bitmediacentre-start.service
 
 [Service]
-ExecStart=/usr/bin/pulseaudio --disallow-exit --exit-idle-time=-1 --daemonize=no
+#Otherwise it cannot create /var/start/pulse:
+ExecStartPre=/bin/chcon -t pulseaudio_home_t /var/start
+#Note: we disable memfd support here because additional policies would be required due to this AVC denial:
+#type=AVC msg=audit(1609365628.244:298): avc:  denied  { read write } for  pid=1491 comm="pulseaudio" path=2F6D656D66643A70756C7365617564696F202864656C6574656429 dev="tmpfs" ino=70699 scontext=system_u:system_r:pulseaudio_t:s0 tcontext=system_u:object_r:tmpfs_t:s0 tclass=file permissive=0
+ExecStart=/usr/bin/pulseaudio --disallow-exit --exit-idle-time=-1 --daemonize=no --enable-memfd=false
 EnvironmentFile=/env.sh
 
 [Install]
