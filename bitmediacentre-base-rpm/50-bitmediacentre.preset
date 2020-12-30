@@ -7,5 +7,7 @@ enable generate-machine-id-and-keypair.*
 enable rc.*
 enable setup-gnome-terminal.*
 enable install-upgrade-youtube-dl.*
+enable pulseaudio.*
+
 
 

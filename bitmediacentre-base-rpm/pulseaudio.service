@@ -1,0 +1,8 @@
+[Unit]
+
+[Service]
+ExecStart=/usr/bin/pulseaudio --disallow-exit --exit-idle-time=-1
+EnvironmentFile=/env.sh
+
+[Install]
+WantedBy=graphical.target

@@ -1,0 +1,4 @@
+#!/bin/sh
+##Dont think the After=network-online.target in rc.service is working correctly...
+
+systemctl restart rc.service
