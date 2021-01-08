@@ -1,6 +1,6 @@
 [Unit]
-Before=firewalld.service
-ConditionDirectoryNotEmpty=/etc/firewalld/zones/
+After=firewalld.service
+ConditionPathExists=!/etc/firewalld/zones/public.xml
 
 [Service]
 ExecStart=/bin/bash /usr/start/bin/configure-firewalld.sh
