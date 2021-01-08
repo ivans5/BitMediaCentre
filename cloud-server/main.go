@@ -137,7 +137,7 @@ func (clientPack *ClientPack) startDownload(rw http.ResponseWriter, req *http.Re
           Tolerations: []apiv1.Toleration{{Key: "key", Value: "value", Effect: "NoSchedule"}},
 	  NodeName: theNode.ObjectMeta.Name,
 	  RestartPolicy: "Never",
-          Volumes: []apiv1.Volume{ apiv1.Volume{Name: "start", VolumeSource: apiv1.VolumeSource{HostPath: &apiv1.HostPathVolumeSource{Path: "/start", Type: &hostPathTypeDirectory }}},
+          Volumes: []apiv1.Volume{ 
                                    apiv1.Volume{Name: "homepcuser", VolumeSource: apiv1.VolumeSource{HostPath: &apiv1.HostPathVolumeSource{Path: "/home/pcuser", Type: &hostPathTypeDirectory }}}},
 	  Containers: []apiv1.Container{{Name: "myaria2", Image: "ivans3/myaria2:latest", 
                                          VolumeMounts: []apiv1.VolumeMount{{Name: "start", MountPath: "/start"},
