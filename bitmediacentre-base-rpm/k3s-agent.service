@@ -2,10 +2,11 @@
 After=generate-machine-id-and-keypair.service
 
 [Service]
-ExecStartPre=/sbin/restorecon -v /usr/local/bin/k3s
-ExecStart=/bin/bash -c '/usr/local/bin/k3s agent --server https://api.bitmediacentre.club:6443 	--token ${K3S_NODE_TOKEN} 	--node-name "bitmediacentre-$(cat /start/my-machine-id)"         --node-taint "key=value:NoSchedule" 	--node-label "machine-id=$(cat /start/my-machine-id)" 	--node-label "publickeya=$(cat /start/public_key.der.hexdump.aa)" 	--node-label "publickeyb=$(cat /start/public_key.der.hexdump.ab)" 	--node-label "publickeyc=$(cat /start/public_key.der.hexdump.ac)" 	--node-label "publickeyd=$(cat /start/public_key.der.hexdump.ad)" 	--node-label "publickeye=$(cat /start/public_key.der.hexdump.ae)" 	--node-label "publickeyf=$(cat /start/public_key.der.hexdump.af)"'
+ExecStartPre=/bin/bash -c '/sbin/restorecon -v /usr/local/bin/k3s && /bin/chcon -t container_file_t /home/pcuser'
+ExecStart=/bin/bash -c '/usr/local/bin/k3s agent --server https://api.bitmediacentre.club:6443 	--token ${K3S_NODE_TOKEN} 	--node-name "bitmediacentre-$(cat /home/pcuser/my-machine-id)"         --node-taint "key=value:NoSchedule" 	--node-label "machine-id=$(cat /home/pcuser/my-machine-id)" 	--node-label "publickeya=$(cat /home/pcuser/public_key.der.hexdump.aa)" 	--node-label "publickeyb=$(cat /home/pcuser/public_key.der.hexdump.ab)" 	--node-label "publickeyc=$(cat /home/pcuser/public_key.der.hexdump.ac)" 	--node-label "publickeyd=$(cat /home/pcuser/public_key.der.hexdump.ad)" 	--node-label "publickeye=$(cat /home/pcuser/public_key.der.hexdump.ae)" 	--node-label "publickeyf=$(cat /home/pcuser/public_key.der.hexdump.af)"'
 CPUShares=1500
 EnvironmentFile=/env.sh
+TimeoutStopSec=10
 
 [Install]
 WantedBy=graphical.target

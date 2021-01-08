@@ -1,0 +1,10 @@
+[Unit]
+Before=firewalld.service
+ConditionDirectoryNotEmpty=/etc/firewalld/zones/
+
+[Service]
+ExecStart=/bin/bash /usr/start/bin/configure-firewalld.sh
+
+[Install]
+WantedBy=multi-user.target
+

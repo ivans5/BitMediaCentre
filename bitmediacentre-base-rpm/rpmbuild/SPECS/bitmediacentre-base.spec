@@ -49,6 +49,8 @@ cp %{_pwd}/00rcserver $RPM_BUILD_ROOT/etc/NetworkManager/dispatcher.d/
 cp %{_pwd}/env.sh $RPM_BUILD_ROOT/usr/start/
 cp %{_pwd}/generate-machine-id-and-keypair.sh $RPM_BUILD_ROOT/usr/start/bin/
 cp %{_pwd}/setup-gnome-terminal.sh $RPM_BUILD_ROOT/usr/start/bin/
+cp %{_pwd}/configure-firewalld.sh $RPM_BUILD_ROOT/usr/start/bin/
+cp %{_pwd}/configure-firewalld.service $RPM_BUILD_ROOT/etc/systemd/system/
 exit 0 #https://stackoverflow.com/questions/30317213/how-to-remove-pyo-anc-pyc-from-an-rpm
 
 %files
@@ -65,12 +67,14 @@ exit 0 #https://stackoverflow.com/questions/30317213/how-to-remove-pyo-anc-pyc-f
 /etc/systemd/system/generate-machine-id-and-keypair.service
 /etc/systemd/system/setup-gnome-terminal.service
 /etc/systemd/system/install-upgrade-youtube-dl.service
+/etc/systemd/system/configure-firewalld.service
 /etc/sway/config.d/mysway.config
 /usr/start/youtube/*.sh
 /usr/start/bin/mymc
 /usr/start/bin/rc-server.py
 /usr/start/bin/generate-machine-id-and-keypair.sh
 /usr/start/bin/setup-gnome-terminal.sh
+/usr/start/bin/configure-firewalld.sh
 /usr/start/env.sh
 /etc/NetworkManager/dispatcher.d/00rcserver
 
@@ -86,3 +90,4 @@ systemctl preset generate-machine-id-and-keypair.service
 systemctl preset setup-gnome-terminal.service
 systemctl preset install-upgrade-youtube-dl.service
 systemctl preset pulseaudio.service
+systemctl preset configure-firewalld.service
