@@ -29,6 +29,7 @@ mkdir -p $RPM_BUILD_ROOT/etc/sway/config.d/
 mkdir -p $RPM_BUILD_ROOT/usr/start/youtube
 mkdir -p $RPM_BUILD_ROOT/usr/start/bin
 mkdir -p $RPM_BUILD_ROOT/etc/NetworkManager/dispatcher.d/
+mkdir -p $RPM_BUILD_ROOT/etc/mytransmission-daemon/
 cp %{_pwd}/bitmediacentre-start.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/50-bitmediacentre.preset $RPM_BUILD_ROOT/lib/systemd/system-preset/
 cp %{_pwd}/compositor.service $RPM_BUILD_ROOT/etc/systemd/system/
@@ -51,6 +52,8 @@ cp %{_pwd}/generate-machine-id-and-keypair.sh $RPM_BUILD_ROOT/usr/start/bin/
 cp %{_pwd}/setup-gnome-terminal.sh $RPM_BUILD_ROOT/usr/start/bin/
 cp %{_pwd}/configure-firewalld.sh $RPM_BUILD_ROOT/usr/start/bin/
 cp %{_pwd}/configure-firewalld.service $RPM_BUILD_ROOT/etc/systemd/system/
+cp %{_pwd}/settings.json $RPM_BUILD_ROOT/etc/mytransmission-daemon/
+cp %{_pwd}/mytransmission-daemon.service $RPM_BUILD_ROOT/etc/systemd/system/
 exit 0 #https://stackoverflow.com/questions/30317213/how-to-remove-pyo-anc-pyc-from-an-rpm
 
 %files
@@ -77,6 +80,8 @@ exit 0 #https://stackoverflow.com/questions/30317213/how-to-remove-pyo-anc-pyc-f
 /usr/start/bin/configure-firewalld.sh
 /usr/start/env.sh
 /etc/NetworkManager/dispatcher.d/00rcserver
+/etc/mytransmission-daemon/settings.json
+/etc/systemd/system/mytransmission-daemon.service
 
 %post
 systemctl preset bitmediacentre-start.service
@@ -91,3 +96,4 @@ systemctl preset setup-gnome-terminal.service
 systemctl preset install-upgrade-youtube-dl.service
 systemctl preset pulseaudio.service
 systemctl preset configure-firewalld.service
+systemctl preset mytransmission-daemon.service

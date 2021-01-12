@@ -1,0 +1,22 @@
+[Unit]
+Description=Transmission BitTorrent Daemon
+After=k3s-agent.service
+
+[Service]
+User=pcuser
+Type=notify
+#TODO: get this working:
+#ExecStartPre=/bin/python3 -c 'import netifaces as n;open("/home/pcuser/someenvfile","w").write("CNI0_NODE_IP="+".".join(n.ifaddresses("flannel.1")[2][0]["addr"].split(".")[:3]+["1"]))'
+#ExecStartPre=/bin/sleep 5
+ExecStartPre=/bin/bash -c 'mkdir -p /home/pcuser/.config/transmission-daemon && cp /etc/mytransmission-daemon/settings.json /home/pcuser/.config/transmission-daemon/ && chmod 400 /home/pcuser/.config/transmission-daemon/settings.json' 
+# && chattr +i /etc/mytransmission-daemon/settings.json'
+ExecStart=/usr/bin/transmission-daemon -f --log-error --download-dir /home/pcuser --config-dir /home/pcuser/.config/transmission-daemon
+#--rpc-bind-address ${CNI0_NODE_IP}
+ExecReload=/bin/kill -s HUP $MAINPID
+NoNewPrivileges=true
+#EnvironmentFile=/home/pcuser/someenvfile
+#Environment=CNI0_NODE_IP=10.42.25.1
+
+[Install]
+WantedBy=multi-user.target
+
