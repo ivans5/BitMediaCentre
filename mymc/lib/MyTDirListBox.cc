@@ -360,7 +360,7 @@ char *graphics = "\xC0\xC3\xC4";
 }
 
 
-//XXX
+//XXX - new file detection only covers files in the home folder and subfolders being added/removed...
 //std::list<dirent *> oldListOfDirents;
 time_t old_st_mtime = 0;
 void MyTDirListBox::doUpdate() 
@@ -370,13 +370,30 @@ void MyTDirListBox::doUpdate()
     struct stat s1;
     char cwd[PATH_MAX];
     strcpy(cwd, dir);
-    stat(cwd, &s1);
+    cwd[strlen(cwd)-1]='\0';  //there was an extra trailing slash causing problem
 
+    char tmp[255];
+    sprintf(tmp,"echo cwd is %s >> /tmp/bleh",cwd);
+    //system(tmp);
+
+    // /homepcuser is a symlink:
+    char dereffed[1024];
+    int c = readlink(cwd, dereffed, 1024);  
+    if (c <= 0)  {
+        system("play -n -c1 synth 0.6 sine 600 >/dev/null 2>/dev/null");//XXX
+        return;
+    }
+    dereffed[c] = '\0';
+
+    sprintf(tmp,"echo dereffed is %s >> /tmp/bleh",dereffed);
+    //system(tmp);
+
+    stat(dereffed, &s1);
   
     //if (newListOfDirents != oldListOfDirents)  //<-- TODO??
     if (old_st_mtime != 0 && s1.st_mtime != old_st_mtime)
     {
-  //system("play -n -c1 synth 0.6 sine 500 >/dev/null 2>/dev/null");//XXX
+        //system("play -n -c1 synth 0.6 sine 500 >/dev/null 2>/dev/null");//XXX
     	TDirCollection *dirs = new TDirCollection( 5, 5 );
     	showDirs( dirs ); //TODO: release memory from old TDirCollection?
     	newList( dirs );
