@@ -140,7 +140,7 @@ func (clientPack *ClientPack) startDownload(rw http.ResponseWriter, req *http.Re
           Volumes: []apiv1.Volume{ 
                                    apiv1.Volume{Name: "homepcuser", VolumeSource: apiv1.VolumeSource{HostPath: &apiv1.HostPathVolumeSource{Path: "/home/pcuser", Type: &hostPathTypeDirectory }}}},
 	  Containers: []apiv1.Container{{Name: "main", Image: "ivans3/mytransmission:latest", 
-                                         VolumeMounts: []apiv1.VolumeMount{{Name: "start", MountPath: "/start"},
+                                         VolumeMounts: []apiv1.VolumeMount{
                                                  {Name: "homepcuser", MountPath: "/homepcuser"}},
 	                                 Env: []apiv1.EnvVar{ 
 						 {Name: "ENCRYPTED_PAYLOAD", Value: jsonRequest.EncryptedPayload},
