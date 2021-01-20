@@ -7,7 +7,7 @@
 [Service]
 Type=oneshot
 ExecStartPre=chattr -i /
-ExecStart=/bin/sh -c "[ -e /env.sh ] || ln -s /usr/start/env.sh /env.sh; [ -e /start ] || { mkdir -p /var/start/; ln -s /usr/start/youtube /var/start/youtube; ln -s /var/start /start; }; mkdir -p /tmp/xdg_runtime_dir; chmod 777 /tmp/xdg_runtime_dir; chcon -u system_u -t user_tmp_t /tmp/xdg_runtime_dir"
+ExecStart=/bin/sh -c "[ -e /env.sh ] || ln -s /usr/start/env.sh /env.sh; [ -e /start ] || { mkdir -p /var/start/; ln -s /usr/start/youtube /var/start/youtube; ln -s /var/start /start; ln -s /var/home/pcuser /homepcuser; }; mkdir -p /tmp/xdg_runtime_dir; chmod 777 /tmp/xdg_runtime_dir; chcon -u system_u -t user_tmp_t /tmp/xdg_runtime_dir"
 ExecStopPost=chattr +i /
 
 [Install]
