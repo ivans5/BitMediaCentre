@@ -27,6 +27,10 @@
 #include <sys/stat.h>
 #include <cstdlib>
 
+//For getcwd():
+#include <unistd.h>
+#include <limits.h>
+
 
 MyTDirListBox::MyTDirListBox( const TRect& bounds, TScrollBar *aScrollBar ) :
     TListBox( bounds, 1, aScrollBar ),
@@ -364,7 +368,9 @@ void MyTDirListBox::doUpdate()
     //std::list<dirent *> newListOfDirents = getListOfDirents(dir);
 
     struct stat s1;
-    stat("/home/pcuser", &s1);
+    char cwd[PATH_MAX];
+    strcpy(cwd, dir);
+    stat(cwd, &s1);
 
   
     //if (newListOfDirents != oldListOfDirents)  //<-- TODO??

@@ -20,6 +20,9 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+//XXX for getenv():
+#include <stdlib.h>
+
 Boolean isDir( const char *str )
 {
 	/* SS: all changed */
@@ -71,7 +74,12 @@ Boolean validFileName( const char *fileName )
 void getCurDir( char *dir )
 {
 	/* SS: all changed */
-	getcwd(dir, PATH_MAX);
+        //XXX - https://stackoverflow.com/questions/1542803/is-there-a-version-of-os-getcwd-that-doesnt-dereference-symlinks
+
+	//getcwd(dir, PATH_MAX);
+        char * pwdvalue = getenv("WORKING_DIRECTORY");
+        strcpy(dir, pwdvalue);
+
 	if (strcmp(dir, "/") != 0) strcat(dir, "/");
 }
 
