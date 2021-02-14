@@ -85,11 +85,10 @@ void MyTDirListBox::showDrives( TDirCollection* )
 int endsWithFoo( char *string )
 {
   string = strrchr(string, '.');
-  int retval1, retval2;
 
   if( string != NULL )  {
     //return( strcmp(string, ".mkv") );
-    //TODO: load this from the value of the "Extensions" TInputLine...
+    //TODO: load this from the value of the "Extensions" TInputLine --> XXX makes navigation by arrow keys more difficult..
     if(strcmp(string, ".mkv") == 0 || strcmp(string, ".mp4") == 0 || strcmp(string, ".avi") == 0)
       return 0;
   }
@@ -179,6 +178,15 @@ void freeMemory(std::list<dirent *> listOfDirents)
 }
 
 
+static int compare_fun (const void *p, const void *q)
+{
+    char *l= (char *)p;
+    char *r= (char *)q;
+    int cmp;
+
+    cmp= strcmp (l, r);
+    return cmp;
+}
 
 void MyTDirListBox::showDirs( TDirCollection *dirs )
 {
@@ -247,6 +255,10 @@ char *graphics = "\xC0\xC3\xC4";
 
         listOfDirents = getListOfDirents(dir);
 
+        /* XXX for sorting the contents of subdirectories alphabetticaly (readdir doesnt return in any order...) */
+        char idata[250][250]; //for simplicity in this example
+        unsigned n=0,j;
+
         std::list<dirent *>::iterator it = listOfDirents.begin();
         while(it != listOfDirents.end())
 		{
@@ -303,10 +315,28 @@ char *graphics = "\xC0\xC3\xC4";
                           if (count > 0 && (dp2 = opendir(path)) != NULL)
                           {
                                   isFirst2= True;
-                                  while ((de2 = readdir(dp2)) != NULL)
-                                  {
-                                    if(endsWithFoo(de2->d_name)==0)  {
-                                      sprintf(path2,"%s/%s",path,de2->d_name);
+                                  //XXX sort the elements of de2 alphabettically:
+                                  n=0;
+
+                                  while (((de2 = readdir(dp2)) != NULL)) { // &&
+                                    if (endsWithFoo(de2->d_name)==0)  {
+	                                 //TODO: Reinstante: && (n < sizeof idata / sizeof idata[0])) {....
+
+                                          strncpy(idata[n++],de2->d_name, 250);    
+                                    }
+                                  }
+
+                                  if (n>1)  {
+                                    	qsort (idata, n, sizeof idata[0], compare_fun); 
+                                  }
+
+
+//Resume normal code path:
+                                  for (j=0;j<n;j++)  {
+                                      char * de_d_name = idata[j];
+                                  
+                                      //DELETEME: sprintf(path2,"%s/%s",path,de2->d_name);
+                                      sprintf(path2,"%s/%s",path,de_d_name);
                                       if (isFirst2)  {
                                         isFirst2 = False;
                                         //XXX    - if first time, insert:   |-+- directory name
@@ -329,10 +359,11 @@ char *graphics = "\xC0\xC3\xC4";
                                         name[0]=' ';
                                       }
 				      len = strlen(selection);
-                                      strcpy(name + len, de2->d_name);
+                                      //DELETEME:strcpy(name + len, de2->d_name);
+                                      strcpy(name + len, de_d_name);
                 	              dirs->insert(new TDirEntry(name - indent,
 				        path2));
-                                    }
+                                    
                                   } 
                 	  	closedir(dp2);
                 	  } //else { printf ("couldnt open dir\n"); }
