@@ -1,5 +1,5 @@
 # BitMediaCentre
-Simple Media Centre PC Build Using Fedora-IOT 
+Simple Media Centre PC Build Using [Fedora-IOT](https://getfedora.org/en/iot/)
 
 ## Features:
 
