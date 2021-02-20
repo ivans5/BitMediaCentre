@@ -9,6 +9,8 @@ Simple Media Centre PC Build Using [Fedora-IOT](https://getfedora.org/en/iot/)
 
   * firewalld and SELinux not disabled ;)
 
+  * transmission-daemon downloading engine
+
   * no login screen, boots straight into a Simple "Commander"-style app, for managing media content:
 
 ![mymc-mpv.png](mymc-mpv.png) 
