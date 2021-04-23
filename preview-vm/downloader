@@ -1,0 +1,48 @@
+#!/sbin/openrc-run
+
+description="BitMediaCentre install"
+description_checkconfig="bleh"
+description_reload="bleh"
+
+#TODO: parametrize this somehow:
+FEDORA_RELEASE=33
+
+start() {
+
+	ebegin "Reloading $RC_SVCNAME"
+	#start-stop-daemon --signal HUP \
+	#	--exec "$command" --pidfile "$pidfile"
+        #echo HEY > /dev/console
+        if [ -s /NEW-KS.CFG ]; then
+            echo BMC Downloader Bailing, file already downloaded...
+            exit 0
+        fi
+        rm -f /*.iso /NEW-KS.CFG
+        whiptail --msgbox "BitMediaCentre: Downloading ISO and latest kickstart file, please wait" 10 50 > /dev/console &
+        sleep 3
+        cd /
+        wget --level=1 --span-hosts -A "Fedora-IoT-IoT-ostree-x86_64-*.iso" --no-directories -r --no-parent https://download.fedoraproject.org/pub/alt/iot/$FEDORA_RELEASE/IoT/x86_64/iso/ >/dev/console
+        RC1=$?
+        wget https://raw.githubusercontent.com/ivans5/BitMediaCentre/master/NEW-KS.CFG > /dev/console
+        RC2=$?
+        #TODO: error-checking...
+        #Write grub menuentry with updated iso filename:
+        ISOFILE=`ls /*.iso`
+        #DEVICE_NAME=UUID=c115424c-51e7-4eb8-8632-d9785b0d940c
+        DEVICE_NAME=/dev/sda3
+        cp -fv /boot/grub/grub.cfg.tmpl /boot/grub/grub.cfg
+        cat <<HERE >>/boot/grub/grub.cfg
+menuentry "[WARNING] NEW-KS.CFG -- execute kickstart file! -- ($ISOFILE)"  {
+    insmod ext2
+    #set dataroot='(hd0,msdos3)'
+    set isofile='(hd0,msdos3)/$ISOFILE'
+    loopback loop \$isofile
+    linux (loop)/isolinux/vmlinuz inst.stage2=hd:$DEVICE_NAME:/$ISOFILE nomodeset inst.ks=hd:$DEVICE_NAME:/NEW-KS.CFG
+    initrd (loop)/isolinux/initrd.img
+}
+HERE
+        whiptail --msgbox "Files downloaded, grub menuentry created, please reboot VM now to continue installation RC1=$RC1 RC2=$RC2" 10 50 > /dev/console &
+        sleep 3
+
+	eend $?
+}
