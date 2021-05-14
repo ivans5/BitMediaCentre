@@ -32,7 +32,7 @@ mkdir -p $RPM_BUILD_ROOT/etc/NetworkManager/dispatcher.d/
 mkdir -p $RPM_BUILD_ROOT/etc/mytransmission-daemon/
 cp %{_pwd}/bitmediacentre-start.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/50-bitmediacentre.preset $RPM_BUILD_ROOT/lib/systemd/system-preset/
-cp %{_pwd}/compositor2@.service $RPM_BUILD_ROOT/etc/systemd/system/
+cp %{_pwd}/compositor2@7.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/terminal.timer $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/terminal.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/mysway.config $RPM_BUILD_ROOT/etc/sway/config.d/
@@ -61,7 +61,7 @@ exit 0 #https://stackoverflow.com/questions/30317213/how-to-remove-pyo-anc-pyc-f
 %defattr(-,root,root)
 /etc/systemd/system/bitmediacentre-start.service
 /lib/systemd/system-preset/50-bitmediacentre.preset
-/etc/systemd/system/compositor2@.service
+/etc/systemd/system/compositor2@7.service
 /etc/systemd/system/mydbus.service
 /etc/systemd/system/mydbus.socket
 /etc/systemd/system/terminal.service
@@ -96,7 +96,7 @@ systemctl preset k3s-agent.service
 systemctl preset rc.service
 systemctl preset generate-machine-id-and-keypair.service
 #TODO: donot run as root: https://forums.linuxmint.com/viewtopic.php?t=197157:
-#systemctl preset setup-gnome-terminal.service
+systemctl preset setup-gnome-terminal.service
 systemctl preset install-upgrade-youtube-dl.service
 systemctl preset pulseaudio.service
 systemctl preset configure-firewalld.service
