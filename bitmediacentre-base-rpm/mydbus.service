@@ -4,7 +4,8 @@
 
 [Service]
 EnvironmentFile=/env.sh
-ExecStart=/usr/local/bin/my-dbus-daemon --session --print-pid=1 --print-address=1 --nofork --address=unix:path=/tmp/xdg_runtime_dir/bus
+#Because the original dbus-daemon cant write to /tmp/xdg_runtime_dir:
+ExecStart=/bin/sh -c '/usr/bin/cp -vf /usr/bin/dbus-daemon /usr/local/bin/my-dbus-daemon && /usr/bin/chcon -u system_u -t bin_t /usr/local/bin/my-dbus-daemon && /usr/local/bin/my-dbus-daemon --session --print-pid=1 --print-address=1 --nofork --address=unix:path=/tmp/xdg_runtime_dir/bus'
 CPUShares=200000
 User=pcuser
 
