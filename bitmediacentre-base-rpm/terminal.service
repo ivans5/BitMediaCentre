@@ -5,3 +5,4 @@ Type=oneshot
 EnvironmentFile=/env.sh
 ExecStart=/usr/bin/gnome-terminal --zoom=3.0 --hide-menubar -- /usr/start/bin/mymc
 WorkingDirectory=/home/pcuser
+User=pcuser
