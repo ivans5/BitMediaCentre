@@ -87,7 +87,8 @@ exit 0 #https://stackoverflow.com/questions/30317213/how-to-remove-pyo-anc-pyc-f
 
 %post
 systemctl preset bitmediacentre-start.service
-systemctl preset compositor2@7.service
+#systemctl preset compositor2@7.service DOESNT WORK
+ln -sf /etc/systemd/system/compositor2@7.service /etc/systemd/system/graphical.target.wants/compositor2\@7.service
 systemctl preset mydbus.service
 systemctl preset mydbus.socket
 #systemctl preset terminal.service
@@ -95,7 +96,7 @@ systemctl preset terminal.timer
 systemctl preset k3s-agent.service
 systemctl preset rc.service
 systemctl preset generate-machine-id-and-keypair.service
-#TODO: donot run as root: https://forums.linuxmint.com/viewtopic.php?t=197157:
+#Donot run as root: https://forums.linuxmint.com/viewtopic.php?t=197157:
 systemctl preset setup-gnome-terminal.service
 systemctl preset install-upgrade-youtube-dl.service
 systemctl preset pulseaudio.service

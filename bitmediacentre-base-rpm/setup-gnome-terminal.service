@@ -1,8 +1,10 @@
 [Unit]
 After=mydbus.service
+Before=terminal.service
 
 [Service]
 EnvironmentFile=/env.sh
+ExecStartPre=/bin/sleep 2
 ExecStart=/bin/bash /usr/start/bin/setup-gnome-terminal.sh
 CPUShares=200000
 User=pcuser
