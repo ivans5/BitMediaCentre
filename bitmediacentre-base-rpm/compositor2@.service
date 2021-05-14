@@ -1,5 +1,6 @@
 [Unit]
 Description=Sway compositor
+After=mydbus.service
 
 [Service]
 #ExecStartPre=/usr/bin/chvt %I

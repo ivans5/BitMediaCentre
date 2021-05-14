@@ -3,6 +3,6 @@
 [Service]
 Type=oneshot
 EnvironmentFile=/env.sh
-ExecStart=/usr/bin/gnome-terminal --zoom=3.0 --hide-menubar -- /usr/start/bin/mymc
+ExecStart=/bin/sh -c 'WAYLAND_DISPLAY=wayland-1 /usr/bin/gnome-terminal --zoom=3.0 --hide-menubar -- /usr/start/bin/mymc'
 WorkingDirectory=/home/pcuser
 User=pcuser

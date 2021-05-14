@@ -1,6 +1,6 @@
 [Unit]
-#After=compositor.service
-#Requires=mydbus.socket
+Requires=mydbus.socket
+After=bitmediacentre-start.service
 
 [Service]
 EnvironmentFile=/env.sh
