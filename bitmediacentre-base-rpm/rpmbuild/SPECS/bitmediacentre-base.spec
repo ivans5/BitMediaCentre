@@ -100,3 +100,5 @@ systemctl preset install-upgrade-youtube-dl.service
 systemctl preset pulseaudio.service
 systemctl preset configure-firewalld.service
 systemctl preset mytransmission-daemon.service
+cp /usr/bin/dbus-daemon /usr/local/bin/my-dbus-daemon
+chcon -u system_u -t bin_t /usr/local/bin/my-dbus-daemon  #match sway binary...

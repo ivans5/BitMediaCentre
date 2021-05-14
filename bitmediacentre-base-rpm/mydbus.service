@@ -1,13 +1,13 @@
 [Unit]
 #After=compositor.service
-Requires=mydbus.socket
+#Requires=mydbus.socket
 
 [Service]
 EnvironmentFile=/env.sh
-ExecStart=/usr/bin/dbus-daemon --session --print-pid=1 --print-address=1 --nofork --address=unix:path=/tmp/xdg_runtime_dir/bus
+ExecStart=/usr/local/bin/my-dbus-daemon --session --print-pid=1 --print-address=1 --nofork --address=unix:path=/tmp/xdg_runtime_dir/bus
 CPUShares=200000
 User=pcuser
 
 [Install]
 WantedBy=graphical.target
-Also=mydbus.socket
+#Also=mydbus.socket

@@ -4,6 +4,7 @@ Description=MY D-Bus User Message Bus Socket
 [Socket]
 ListenStream=/tmp/xdg_runtime_dir/bus
 #ExecStartPost=-/usr/bin/systemctl --user set-environment DBUS_SESSION_BUS_ADDRESS=unix:path=/tmp/xdg_runtime_dir/bus
+User=pcuser
 
 [Install]
 WantedBy=sockets.target

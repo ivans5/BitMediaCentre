@@ -1,5 +1,4 @@
 #TODO:HOME
-#TODO:WAYLAND_DISPLAY?
 LANG="en_US.UTF-8"
 LC_ALL="en_US.UTF-8"
 XDG_RUNTIME_DIR=/tmp/xdg_runtime_dir
@@ -10,4 +9,4 @@ WORKING_DIRECTORY=/homepcuser
 XDG_SEAT=seat0
 XDG_SESSION_TYPE=tty
 DBUS_SESSION_BUS_ADDRESS=unix:path=/tmp/xdg_runtime_dir/bus
-WAYLAND_DISPLAY=wayland-1
+#WAYLAND_DISPLAY=wayland-1
