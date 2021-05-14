@@ -32,11 +32,12 @@ mkdir -p $RPM_BUILD_ROOT/etc/NetworkManager/dispatcher.d/
 mkdir -p $RPM_BUILD_ROOT/etc/mytransmission-daemon/
 cp %{_pwd}/bitmediacentre-start.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/50-bitmediacentre.preset $RPM_BUILD_ROOT/lib/systemd/system-preset/
-cp %{_pwd}/compositor.service $RPM_BUILD_ROOT/etc/systemd/system/
+cp %{_pwd}/compositor2@.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/terminal.timer $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/terminal.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/mysway.config $RPM_BUILD_ROOT/etc/sway/config.d/
 cp %{_pwd}/mydbus.service $RPM_BUILD_ROOT/etc/systemd/system/
+cp %{_pwd}/mydbus.socket $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/pulseaudio.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/k3s-agent.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/generate-machine-id-and-keypair.service $RPM_BUILD_ROOT/etc/systemd/system/
@@ -60,8 +61,9 @@ exit 0 #https://stackoverflow.com/questions/30317213/how-to-remove-pyo-anc-pyc-f
 %defattr(-,root,root)
 /etc/systemd/system/bitmediacentre-start.service
 /lib/systemd/system-preset/50-bitmediacentre.preset
-/etc/systemd/system/compositor.service
+/etc/systemd/system/compositor2@.service
 /etc/systemd/system/mydbus.service
+/etc/systemd/system/mydbus.socket
 /etc/systemd/system/terminal.service
 /etc/systemd/system/terminal.timer
 /etc/systemd/system/k3s-agent.service
@@ -85,8 +87,9 @@ exit 0 #https://stackoverflow.com/questions/30317213/how-to-remove-pyo-anc-pyc-f
 
 %post
 systemctl preset bitmediacentre-start.service
-systemctl preset compositor.service
+systemctl preset compositor2@7.service
 systemctl preset mydbus.service
+systemctl preset mydbus.socket
 #systemctl preset terminal.service
 systemctl preset terminal.timer
 systemctl preset k3s-agent.service
