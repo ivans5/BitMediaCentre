@@ -95,7 +95,8 @@ systemctl preset terminal.timer
 systemctl preset k3s-agent.service
 systemctl preset rc.service
 systemctl preset generate-machine-id-and-keypair.service
-systemctl preset setup-gnome-terminal.service
+#TODO: donot run as root: https://forums.linuxmint.com/viewtopic.php?t=197157:
+#systemctl preset setup-gnome-terminal.service
 systemctl preset install-upgrade-youtube-dl.service
 systemctl preset pulseaudio.service
 systemctl preset configure-firewalld.service
