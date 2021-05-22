@@ -3,6 +3,7 @@
 [Service]
 Type=oneshot
 EnvironmentFile=/env.sh
+#TODO: figure out if this WAYLAND_DISPLAY should originate from elsewhere?
 ExecStart=/bin/sh -c 'WAYLAND_DISPLAY=wayland-1 /usr/bin/gnome-terminal --zoom=3.0 --hide-menubar -- /usr/start/bin/mymc'
 WorkingDirectory=/home/pcuser
 User=pcuser
