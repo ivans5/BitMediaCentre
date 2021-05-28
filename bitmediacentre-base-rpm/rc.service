@@ -1,8 +1,8 @@
 [Unit]
-After=network-online.target
+After=myevemu-device.service
 
 [Service]
-ExecStart=/bin/python3 /usr/start/bin/rc-server.py
+ExecStart=/bin/python3 /usr/start/bin/rc-server2.py
 
 [Install]
 WantedBy=graphical.target

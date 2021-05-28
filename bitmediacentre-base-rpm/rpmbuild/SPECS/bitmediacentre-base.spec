@@ -28,6 +28,7 @@ mkdir -p $RPM_BUILD_ROOT/lib/systemd/system-preset/
 mkdir -p $RPM_BUILD_ROOT/etc/sway/config.d/
 mkdir -p $RPM_BUILD_ROOT/usr/start/youtube
 mkdir -p $RPM_BUILD_ROOT/usr/start/bin
+mkdir -p $RPM_BUILD_ROOT/usr/start/etc
 mkdir -p $RPM_BUILD_ROOT/etc/NetworkManager/dispatcher.d/
 mkdir -p $RPM_BUILD_ROOT/etc/mytransmission-daemon/
 cp %{_pwd}/bitmediacentre-start.service $RPM_BUILD_ROOT/etc/systemd/system/
@@ -44,11 +45,13 @@ cp %{_pwd}/generate-machine-id-and-keypair.service $RPM_BUILD_ROOT/etc/systemd/s
 cp %{_pwd}/setup-gnome-terminal.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/install-upgrade-youtube-dl.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/rc.service $RPM_BUILD_ROOT/etc/systemd/system/
+cp %{_pwd}/myevemu-device.service $RPM_BUILD_ROOT/etc/systemd/system/
+cp %{_pwd}/fakekeyboard.prop $RPM_BUILD_ROOT/usr/start/etc/
 cp %{_pwd}/youtube-dl/*.sh $RPM_BUILD_ROOT/usr/start/youtube
 cp %{_pwd}/../mymc/mymc/mymc $RPM_BUILD_ROOT/usr/start/bin/
-cp %{_pwd}/../rc-server/rc-server.py $RPM_BUILD_ROOT/usr/start/bin/
+cp %{_pwd}/rc-server2.py $RPM_BUILD_ROOT/usr/start/bin/
 cp %{_pwd}/00rcserver $RPM_BUILD_ROOT/etc/NetworkManager/dispatcher.d/
-cp %{_pwd}/env.sh $RPM_BUILD_ROOT/usr/start/
+cp %{_pwd}/env.sh $RPM_BUILD_ROOT/usr/start/etc/
 cp %{_pwd}/generate-machine-id-and-keypair.sh $RPM_BUILD_ROOT/usr/start/bin/
 cp %{_pwd}/setup-gnome-terminal.sh $RPM_BUILD_ROOT/usr/start/bin/
 cp %{_pwd}/configure-firewalld.sh $RPM_BUILD_ROOT/usr/start/bin/
@@ -68,6 +71,7 @@ exit 0 #https://stackoverflow.com/questions/30317213/how-to-remove-pyo-anc-pyc-f
 /etc/systemd/system/terminal.timer
 /etc/systemd/system/k3s-agent.service
 /etc/systemd/system/rc.service
+/etc/systemd/system/myevemu-device.service
 /etc/systemd/system/pulseaudio.service
 /etc/systemd/system/generate-machine-id-and-keypair.service
 /etc/systemd/system/setup-gnome-terminal.service
@@ -76,11 +80,12 @@ exit 0 #https://stackoverflow.com/questions/30317213/how-to-remove-pyo-anc-pyc-f
 /etc/sway/config.d/mysway.config
 /usr/start/youtube/*.sh
 /usr/start/bin/mymc
-/usr/start/bin/rc-server.py
+/usr/start/bin/rc-server2.py
+/usr/start/etc/fakekeyboard.prop
 /usr/start/bin/generate-machine-id-and-keypair.sh
 /usr/start/bin/setup-gnome-terminal.sh
 /usr/start/bin/configure-firewalld.sh
-/usr/start/env.sh
+/usr/start/etc/env.sh
 /etc/NetworkManager/dispatcher.d/00rcserver
 /etc/mytransmission-daemon/settings.json
 /etc/systemd/system/mytransmission-daemon.service
@@ -95,6 +100,7 @@ systemctl preset mydbus.socket
 systemctl preset terminal.timer
 systemctl preset k3s-agent.service
 systemctl preset rc.service
+systemctl preset myevemu-device.service
 systemctl preset generate-machine-id-and-keypair.service
 #Donot run as root: https://forums.linuxmint.com/viewtopic.php?t=197157:
 systemctl preset setup-gnome-terminal.service

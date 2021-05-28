@@ -1,0 +1,8 @@
+[Unit]
+After=bitmediacentre-start.service
+
+[Service]
+ExecStart=/bin/evemu-device /usr/start/etc/fakekeyboard.prop
+
+[Install]
+WantedBy=graphical.target
