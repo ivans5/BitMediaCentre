@@ -9,8 +9,7 @@ After=bitmediacentre-start.service
 #  (Note that the path info is .b16decode() encoded...)
 #  (Note that the denial only accurs when being run from wayland console...)
 #TODO: figure out why pulseaudio cant talk to D-Bus (SELinux labeling issue...)
-#ExecStart=/usr/bin/pulseaudio --disallow-exit --exit-idle-time=-1 --daemonize=no --enable-memfd=false
-ExecStart=/usr/bin/pulseaudio --daemonize=no --log-target=stderr --enable-memfd=false
+ExecStart=/usr/bin/pulseaudio --daemonize=no --log-target=stderr --enable-memfd=false --disallow-exit --exit-idle-time=-1
 EnvironmentFile=/env.sh
 User=pcuser
 
