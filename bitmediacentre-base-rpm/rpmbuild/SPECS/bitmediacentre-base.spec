@@ -100,7 +100,6 @@ systemctl preset mydbus.socket
 systemctl preset terminal.timer
 systemctl preset k3s-agent.service
 systemctl preset rc.service
-systemctl preset myevemu-device.service
 systemctl preset generate-machine-id-and-keypair.service
 #Donot run as root: https://forums.linuxmint.com/viewtopic.php?t=197157:
 systemctl preset setup-gnome-terminal.service

@@ -1,5 +1,5 @@
 [Unit]
-After=myevemu-device.service
+Requires=myevemu-device.service
 
 [Service]
 ExecStart=/bin/python3 /usr/start/bin/rc-server2.py
