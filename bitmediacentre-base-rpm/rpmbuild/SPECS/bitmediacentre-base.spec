@@ -36,7 +36,7 @@ cp %{_pwd}/50-bitmediacentre.preset $RPM_BUILD_ROOT/lib/systemd/system-preset/
 cp %{_pwd}/compositor2@7.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/terminal.timer $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/terminal.service $RPM_BUILD_ROOT/etc/systemd/system/
-cp %{_pwd}/mysway.config $RPM_BUILD_ROOT/etc/sway/config.d/
+cp %{_pwd}/mysway.cfg $RPM_BUILD_ROOT/usr/start/etc/
 cp %{_pwd}/mydbus.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/mydbus.socket $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/pulseaudio.service $RPM_BUILD_ROOT/etc/systemd/system/
@@ -77,7 +77,7 @@ exit 0 #https://stackoverflow.com/questions/30317213/how-to-remove-pyo-anc-pyc-f
 /etc/systemd/system/setup-gnome-terminal.service
 /etc/systemd/system/install-upgrade-youtube-dl.service
 /etc/systemd/system/configure-firewalld.service
-/etc/sway/config.d/mysway.config
+/usr/start/etc/mysway.cfg
 /usr/start/youtube/*.sh
 /usr/start/bin/mymc
 /usr/start/bin/rc-server2.py

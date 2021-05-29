@@ -10,7 +10,7 @@ After=bitmediacentre-start.service
 #  (Note that the denial only accurs when being run from wayland console...)
 #TODO: figure out why pulseaudio cant talk to D-Bus (SELinux labeling issue...)
 #TODO: figure out why we cant have one or more of these anymore: --disallow-exit --exit-idle-time=-1
-ExecStart=/usr/bin/pulseaudio --daemonize=no --log-target=stderr --enable-memfd=false
+ExecStart=/usr/bin/pulseaudio --daemonize=no --log-target=stderr --enable-memfd=false --exit-idle-time=-1
 EnvironmentFile=/env.sh
 User=pcuser
 
