@@ -6,7 +6,7 @@ After=mydbus.service
 [Service]
 #ExecStartPre=/usr/bin/chvt %I
 #TODO: WHY IS THIS NEED: WHY NO RESPECT ENV.SH FOR XDG_RUNTIME_DIR???:
-ExecStart=/bin/sh -c 'set -a; . /env.sh; exec /usr/bin/sway --debug --config /usr/start/etc/sway.cfg > /tmp/outA 2> /tmp/outB'
+ExecStart=/bin/sh -c 'set -a; . /env.sh; exec /usr/bin/sway --debug --config /usr/start/etc/mysway.cfg > /tmp/outA 2> /tmp/outB'
 TTYPath=/dev/tty%I
 TTYReset=yes
 TTYVHangup=yes
