@@ -27,8 +27,12 @@ Simple Media Centre PC Build Using [Fedora-IOT](https://getfedora.org/en/iot/)
 
 *here, 200 OK response means that the pod was accepted for scheduling by the cloud service*
 
+## (NEW) Try it first on a VM 
 
-## Installation Steps:
+Please see the [preview-vm](preview-vm) folder for more details!
+
+
+## (Bare Metal) Installation Steps:
 
 1. Install grub to a USB stick
 2. Copy the kickstart file, and the [Fedora-IOT](https://getfedora.org/en/iot/) iso (eg. Fedora-IoT-IoT-ostree-x86_64-33-20201102.0.iso) to the USB drive

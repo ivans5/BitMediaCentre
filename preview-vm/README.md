@@ -17,7 +17,7 @@ Steps:
 
 1. get Alpine Linux "virt" iso from: https://alpinelinux.org/downloads/
 
-2. Create a new VM and add an extra 20G hdd
+2. Create a new VM and add an extra 20G hdd (to the SATA controller)
 
 3. boot disc and run `setup-alpine` to install to the first hdd, reboot into newly installed system
 
