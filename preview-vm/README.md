@@ -1,10 +1,19 @@
-# Preview using VirtualBox VM
+# Preview using VirtualBox 6+ VM
 
 ## Usage
 
-To use, simply Import appliance file into VirtualBox programme.
+Download and Import appliance file into VirtualBox (6+!) programme.
+Next, ensure the following settings:
+* Enable 3D Acceleration (it's in the Display settings for VM)
+* Max out VRAM
+* Switch networking to "Bridged" mode
 
-## Build steps
+Steps:
+1. Start the VM, wait for the download to complete, reboot VM when prompted...
+2. Choose the NEW-KS.CFG grub entry to launch Fedora Anaconda installer
+3. Once Fedora-IoT install complete, reboot to the BitMediaCentre *(Second)* hard drive
+
+## Build the VM Appliance from scatch:
 
 1. get Alpine Linux "virt" iso from: https://alpinelinux.org/downloads/
 
@@ -28,6 +37,5 @@ apk add -U newt wget
 ```
 rc-update add downloader default
 ```
-
 
 

@@ -1,11 +1,11 @@
-menuentry "alpine-virt (grub-bios) -- START HERE --"  {
-    insmod ext2
-    set root='hd0,msdos1'
-    linux /vmlinuz-virt root=/dev/sda3 ro rootfstype=ext4
-    initrd /initramfs-virt
-}
+#menuentry "alpine-virt (grub-bios) -- STARTED HERE --"  {
+#    insmod ext2
+#    set root='hd0,msdos1'
+#    linux /vmlinuz-virt root=/dev/sda3 ro rootfstype=ext4
+#    initrd /initramfs-virt
+#}
 
-menuentry "* Boot the second (BitMediaCentre) hard drive..."  {
+menuentry "* Boot the BitMediaCentre (second) hard drive..."  {
     set root=(hd1)
     chainloader +1
     boot

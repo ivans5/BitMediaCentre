@@ -4,6 +4,6 @@
 Type=oneshot
 EnvironmentFile=/env.sh
 #TODO: figure out if this WAYLAND_DISPLAY should originate from elsewhere?
-ExecStart=/bin/bash -c 'WAYLAND_DISPLAY=wayland-1 /usr/bin/gnome-terminal --zoom=$(dmesg|grep vboxvideo && echo 1.0 || echo 3.0) --hide-menubar -- /usr/start/bin/mymc'
+ExecStart=/bin/bash -c 'WAYLAND_DISPLAY=wayland-1 /usr/bin/gnome-terminal --zoom=$(dmesg|grep vboxguest >/dev/null && echo 1.0 || echo 3.0) --hide-menubar -- /usr/start/bin/mymc'
 WorkingDirectory=/home/pcuser
 User=pcuser

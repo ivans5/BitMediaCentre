@@ -15,7 +15,7 @@ autoreconf -fi
 
 3.
 ```
-./configure CXXFLAGS='-g -O2 -w -std=c++03'
+./configure CXXFLAGS='-g -O2 -w -std=c++03' --disable-linux-gpm
 ```
 
 4.

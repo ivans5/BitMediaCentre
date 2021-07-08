@@ -2,6 +2,7 @@
 
 [ -e /env.sh ] || ln -s /usr/start/etc/env.sh /env.sh
 
+#Note:You can break the link to /usr/start/youtube if you want to customize that folder:
 [ -e /start ] || { mkdir -p /var/start/; ln -s /usr/start/youtube /var/start/youtube; ln -s /var/start /start; ln -s /var/home/pcuser /homepcuser; }
 
 
