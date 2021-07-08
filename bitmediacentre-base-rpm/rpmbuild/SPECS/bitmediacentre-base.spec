@@ -33,6 +33,7 @@ mkdir -p $RPM_BUILD_ROOT/etc/NetworkManager/dispatcher.d/
 mkdir -p $RPM_BUILD_ROOT/etc/mytransmission-daemon/
 cp %{_pwd}/bitmediacentre-start.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/50-bitmediacentre.preset $RPM_BUILD_ROOT/lib/systemd/system-preset/
+cp %{_pwd}/bitmediacentre-start.sh $RPM_BUILD_ROOT/usr/start/bin/
 cp %{_pwd}/compositor2@7.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/terminal.timer $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/terminal.service $RPM_BUILD_ROOT/etc/systemd/system/
@@ -85,6 +86,7 @@ exit 0 #https://stackoverflow.com/questions/30317213/how-to-remove-pyo-anc-pyc-f
 /usr/start/bin/generate-machine-id-and-keypair.sh
 /usr/start/bin/setup-gnome-terminal.sh
 /usr/start/bin/configure-firewalld.sh
+/usr/start/bin/bitmediacentre-start.sh
 /usr/start/etc/env.sh
 /etc/NetworkManager/dispatcher.d/00rcserver
 /etc/mytransmission-daemon/settings.json

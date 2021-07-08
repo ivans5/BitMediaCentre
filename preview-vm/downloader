@@ -5,7 +5,7 @@ description_checkconfig="bleh"
 description_reload="bleh"
 
 #TODO: parametrize this somehow:
-FEDORA_RELEASE=33
+FEDORA_RELEASE=34
 
 start() {
 
@@ -41,7 +41,8 @@ menuentry "[WARNING] NEW-KS.CFG -- execute kickstart file! -- ($ISOFILE)"  {
     initrd (loop)/isolinux/initrd.img
 }
 HERE
-        whiptail --msgbox "Files downloaded, grub menuentry created, please reboot VM now to continue installation RC1=$RC1 RC2=$RC2" 10 50 > /dev/console &
+        sync
+        whiptail --msgbox "Files downloaded, grub menuentry created, please reboot VM now to continue installation RC1=$RC1 RC2=$RC2 (both should be zero)" 10 50 > /dev/console &
         sleep 3
 
 	eend $?
