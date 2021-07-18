@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#Note: if you override env.sh you may also need to reload systemd 'daemon-reload'?
+
 [ -e /env.sh ] || ln -s /usr/start/etc/env.sh /env.sh
 
 #Note:You can break the link to /usr/start/youtube if you want to customize that folder:

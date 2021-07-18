@@ -1,6 +1,6 @@
-#TODO:HOME
-LANG="en_US.UTF-8"
-LC_ALL="en_US.UTF-8"
+HOME="/home/pcuser"
+LANG="C.UTF-8"
+LC_ALL="C.UTF-8"
 XDG_RUNTIME_DIR=/tmp/xdg_runtime_dir
 XDG_CONFIG_HOME=/tmp
 #TODO: Is WLC_XWAYLAND used for anything??
