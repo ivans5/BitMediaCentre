@@ -7,6 +7,7 @@ Next, ensure the following settings:
 * Enable 3D Acceleration (it's in the Display settings for VM)
 * Max out VRAM
 * Switch networking to "Bridged" mode
+* Probably want to not retain any MAC addresses
 
 Steps:
 1. Start the VM, wait for the download to complete, reboot VM when prompted...
