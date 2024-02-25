@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -56,7 +57,10 @@ public class PlaceholderFragment extends Fragment {
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+
         View root = inflater.inflate(R.layout.fragment_main, container, false);
+
+
         /*
         final TextView textView = root.findViewById(R.id.section_label);
         pageViewModel.getText().observe(this, new Observer<String>() {
@@ -85,8 +89,46 @@ public class PlaceholderFragment extends Fragment {
             });
         }
 
+        //
+        // Your fragment initialization code here
+        //
+
         return root;
     }
+
+    //TODO:DELETEME:
+    /*
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Hide keyboard if application is being resumed and this Fragement/Tab is selected:
+        System.err.println("ONRSUME");
+        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (inputMethodManager != null && getActivity().getCurrentFocus() != null) {
+            inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+        }
+    }
+
+     */
+
+
+    //Hide keyboard when switching to this tab from other tab:
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {  //TODO:FIX DEPRECATED...
+        super.setUserVisibleHint(isVisibleToUser);
+        //Code executes EVERY TIME user views the fragment
+
+        if (getActivity() != null && isVisibleToUser == true) {
+            System.err.println("setUserVisibleHint:HERE");
+
+            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (inputMethodManager != null && getActivity().getCurrentFocus() != null) {
+                inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+            }
+        }
+    }
+
 
     InetAddress getBroadcastAddress2() throws java.net.SocketException {
         // This works both in tethering and when connected to an Access Point

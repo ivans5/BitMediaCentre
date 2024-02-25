@@ -26,15 +26,14 @@
         android:selectAllOnFocus="true"
         android:imeActionLabel="Go" />
 
-<!--
     <Button
-        android:id="@+id/go"
+        android:id="@+id/scan"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:text="but"
+        android:text="SCN"
         android:scaleType="centerInside"
         android:padding="10dp"
         android:layout_alignParentRight="true"/>
-        -->
+
 
 </RelativeLayout>

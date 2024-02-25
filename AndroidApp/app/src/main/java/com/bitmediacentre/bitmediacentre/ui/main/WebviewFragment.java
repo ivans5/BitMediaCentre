@@ -5,21 +5,28 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+//import android.renderscript.Sampler;
 import android.text.Editable;
+//import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
+//import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
@@ -57,6 +64,8 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+
+
 /**
  * WebviewFragment
  */
@@ -69,6 +78,9 @@ public class WebviewFragment extends Fragment {
     private PageViewModel pageViewModel;
 
     private String theDomain = "";  //crappy popup blocker...
+
+    AutoCompleteTextView theEt = null;
+
 
     //TODO: figure out a better way to communicate:
     CountDownLatch latch;
@@ -111,7 +123,57 @@ public class WebviewFragment extends Fragment {
         final WebView wv = myWebView;
         AutoCompleteTextView editText = (AutoCompleteTextView) root.findViewById(R.id.et);
         final AutoCompleteTextView et = editText;
+        theEt = editText;
 
+        final Button b = (Button) root.findViewById(R.id.scan);
+
+        //Scan the DOM for `magnet:` A-HREF links in case their popup-code is causing problems
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String javascriptCode = "var retval='NONE_FOUND'; var elems = document.getElementsByTagName('a');" +
+                "for (var i = 0, n = elems.length; i < n; i++) {" +
+                "if (elems[i].href.startsWith('magnet:')) { "+
+                "        if (retval != 'NONE_FOUND' && elems[i].href != retval)  {retval= 'AMBIGUOUS'} else {" +
+                "retval = elems[i].href } } }" +
+                "retval;";
+
+                wv.evaluateJavascript(javascriptCode, new ValueCallback<String>() {
+                    @Override
+                    public void onReceiveValue(String value) {
+                        System.err.println("APP_SIDE: value="+value);
+
+                        if (value != null && !value.isEmpty() && value.length() > 2)  {
+                            String value2= value.substring(1, value.length()-1);  //remove the double-quotes
+
+                            if (value2.equals("NONE_FOUND"))  {
+                                latch = new CountDownLatch(1);
+                                resultText = value2 + ": No magnets scanned";
+                                latch.countDown();
+                            }
+                            else if (value2.equals("AMBIGUOUS"))   {
+                                latch = new CountDownLatch(1);
+                                resultText = value2 + ": multiple magents...";
+                                latch.countDown();
+                            } else {
+                                emitMagnetUrl3(wv, value2);
+                                //dont block this thread?
+                            }
+
+                            try {
+                                latch.await(5, TimeUnit.SECONDS);
+                            } catch (java.lang.InterruptedException e ) {
+                                resultText="InterruptedException";
+                            }
+
+                            Toast.makeText(getContext(),resultText,Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        });
+
+        /*
         OnBackPressedCallback callback = new OnBackPressedCallback(true ) {
             @Override
             public void handleOnBackPressed() {
@@ -124,6 +186,7 @@ public class WebviewFragment extends Fragment {
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
+         */
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(true);
@@ -132,8 +195,9 @@ public class WebviewFragment extends Fragment {
 
         WebSettings settings = wv.getSettings();
         settings.setJavaScriptEnabled(true);
+
         settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        settings.setAppCacheEnabled(false);
+        //settings.setAppCacheEnabled(false); //XXX-DEPRECATED?
         settings.setDomStorageEnabled(true);
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(true);
@@ -146,7 +210,37 @@ public class WebviewFragment extends Fragment {
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
                 et.setText(url);
+                //Log.i("TAG","HELLO WRORLD onPageStarted: "+url);
+                super.onPageStarted(view,url,favicon);
             }
+
+            /*
+            @Override
+            public void onPageFinished(WebView view, String url)  {
+                ...
+            }*/
+
+            //TODO:DELETME:
+            /*
+            public void loadPopupUrlInHiddenWebView(String url)
+            {
+                WebView hiddenWebView = null;
+                System.err.println("loadPopupUrlInHiddenWebView: HERE: url="+url);
+
+                if (hiddenWebView == null)  {
+                    hiddenWebView = new WebView(getContext());
+                    hiddenWebView.setVisibility(View.GONE);
+
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)  {
+                        hiddenWebView.createWebMessageChannel();
+                    }
+
+
+                    hiddenWebView.loadUrl(url);
+                }
+            }
+             */
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -154,6 +248,7 @@ public class WebviewFragment extends Fragment {
                 //Log.d("My Webview", url);
 
                 if (url.startsWith("magnet:"))  {
+                    System.err.println("HERE: url="+url);
                     emitMagnetUrl3(view, url);
 
                     //dont block this thread?
@@ -171,16 +266,20 @@ public class WebviewFragment extends Fragment {
                 System.err.println("url="+url+", theDomain="+theDomain);
                 try {
                     if (!(new URL(url).getHost().endsWith(theDomain))) {
+                        //loadPopupUrlInHiddenWebView(url);
                         return true;  //return true: Indicates WebView to NOT load the url;
+
                     }
                 } catch (java.net.MalformedURLException e) {}
 
-                return false; //Allow WebView to load url
+
+                System.err.println("shouldOverrideUrlLoading: HERE2,url="+url);
+                return super.shouldOverrideUrlLoading(view, url); //Allow WebView to load url
             }
         });
 
-        wv.loadUrl("https://html5test.com");
-        theDomain = "html5test.com";
+        wv.loadUrl("https://duckduckgo.com");
+        theDomain = "duckduckgo.com";
 
         final ArrayList<String> historyItems = new ArrayList<>();
 
@@ -192,20 +291,63 @@ public class WebviewFragment extends Fragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
+                    //XXX - this code path stopped being reached at around android 13?:
+                } else {
+                        //<-- NOTE: This is still needed...
+                        adapter.clear();
+                        adapter.addAll(getHistoryItems());
+                        adapter.notifyDataSetChanged();
+
+                }
+            }
+        });
+
+        //NOTE: This one setOnKeyListener doesnt appear to get called:
+        /*
+        et.setOnKeyListener(new View.OnKeyListener() {
+                                @Override
+                                public boolean onKey(View view, int i, KeyEvent keyEvent) {
+                                    //2023-10-07 11:37:57.255 25148-25148/com.example.mynewapplication I/TAG: ONKEY1,key=KeyEvent { action=ACTION_UP, keyCode=KEYCODE_ENTER, scanCode=28, metaState=0, flags=0x8, repeatCount=0, eventTime=79448241, downTime=79448156, deviceId=0, source=0x101, displayId=-1 }
+                                    ...
+                                }
+                            }
+        );
+         */
+
+
+        et.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_NEXT) {
+                    //Toast.makeText(getContext(),"IME_ACTION_DONE",Toast.LENGTH_SHORT).show();
+                    //Log.i("TAG","GOT ENTER");
                     InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(et.getWindowToken(), 0);
                     addNewHistoryItem(et.getText());
                     handleLoadUrl(false, wv, et);
+                    wv.requestFocus();
                 } else {
-                    adapter.clear();
-                    adapter.addAll(getHistoryItems());
-                    adapter.notifyDataSetChanged();
+                    Toast.makeText(getContext(),"IME_ACTION: "+Integer.toHexString(actionId),Toast.LENGTH_SHORT).show();
                 }
+                return false; //<-- whether to "buuble up" the event so that other handler may get it
             }
         });
 
         return root;
     }
+
+    //** NOTE: Need to clear focus on editText when switching away from this app, otherwise the keyboard will pop back up on other tab...:
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        System.err.println("ONPAUSE - HERE");
+        if(theEt != null)  {
+            System.err.println("ONPAUSE - HERE - CLEARING FOCUS");
+            theEt.clearFocus();
+        }
+    }
+
 
     private void addNewHistoryItem(Editable text) {
         ArrayList<String> newHistoryItems = getHistoryItems();

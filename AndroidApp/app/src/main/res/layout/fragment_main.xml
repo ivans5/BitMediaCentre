@@ -5,6 +5,7 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     tools:context=".ui.main.PlaceholderFragment">
 
     <!--
@@ -132,18 +133,19 @@
         />
 
 
-    <!-- e.KEY_ENTER == 28 -->
+    <!-- ** NOTE: WAS: e.KEY_ENTER == 28 -->
+    <!-- NOW: @.id/enter --> j/36 -->
     <Button
         android:id="@+id/enter"
         android:layout_width="88dp"
         android:layout_height="88dp"
         android:background="@drawable/enter"
-        android:text="⏎"
+        android:text="j"
         android:textAllCaps="false"
         android:textColor="#000000"
         android:textSize="24pt"
         android:textStyle="bold"
-        android:tag="28"
+        android:tag="36"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
