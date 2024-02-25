@@ -33,19 +33,15 @@ Simple Media Centre PC Build Using [Fedora-IOT](https://getfedora.org/en/iot/)
 1. create GPT partition  table (gdisk or fdisk)
 2. create FAT32 partitions:
    partition 1: size 500M, type 1 (EFT);  parition 2: type 11 (Microsoft basic)
-3. format FAT32 parition (mkfs.fat -F 32 /dev/sd?1)
+3. format FAT32 parition (mkfs.fat -F 32 /dev/sd&#65533;1)
 4. mount FAT32 parition (to /mnt)
 5. install grub2-efi-x64-modules.noarch
 6. grub2-install --target=x86_64-efi --efi-directory=/mnt --bootloader-id=BOOT  #(Note: Secure boot!)
 7. replace files in /EFI/BOOT with the one's from the ISO
 8. copy initrd.img and vmlinuz from /images/pxeboot/ from the iso to the /mnt 
-9. copy and modify the Kickstart file `NEW-KS.CFG` to /mnt:
-wifi (search for "REDACTED")  
-installation hard drive selection!
-timezone
-enable optional features  
-any other customisation (eg. kparam)  
-10. write the Fedora-IoT .iso file (eg. Fedora-IoT-ostree-x86_64-39-20231103.1.iso) to partition 2 of usb stick: dd if=bleh.iso of=/dev/sd?2 bs=1M status=progress
+9. copy and modify the Kickstart file `NEW-KS.CFG` to /mnt; things to modify:
+    * wifi credentials (search for "REDACTED"), installation hard drive selection!, timezone, enable optional features,any other customisation (eg. kparam)  
+10. write the Fedora-IoT .iso file (eg. Fedora-IoT-ostree-x86_64-39-20231103.1.iso) to partition 2 of usb stick: dd if=bleh.iso of=/dev/sd&#65533;2 bs=1M status=progress
 11. Edit the grub.cfg on new EFI partition and add something like this entry:
 ```
 menuentry 'NEW-KS.CFG' --class fedora --class gnu-linux --class gnu --class os {
@@ -57,5 +53,4 @@ menuentry 'NEW-KS.CFG' --class fedora --class gnu-linux --class gnu --class os {
 ```
 
 Finally, Boot the USB stick in the TARGET computer (by selecting the id specified in step#6) and choose the grub option from step #11 (*CAUTION:* Will wipe hard drive without prompting!!)
-
 
