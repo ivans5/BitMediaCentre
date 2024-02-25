@@ -1,0 +1,14 @@
+#Optinal Replacement for mytransmission-daemon.service using https://github.com/haugene/docker-transmission-openvpn/
+[Unit]
+Description=Transmission BitTorrent Daemon
+After=k3s-agent.service
+
+[Service]
+Type=notify
+#TODO:ExecStartPre=[mkdir -p /home/pcuser/config && chmod -R 777 /home/pcuser/config ] ?
+ExecStart=/bin/podman run --rm --cap-add=NET_ADMIN -v /home/pcuser/:/data -v /home/pcuser/:/downloads -v /home/pcuser/config:/config -e OPENVPN_PROVIDER=mullvad -e OPENVPN_CONFIG=ca_van -e OPENVPN_USERNAME=4191234567890 -e OPENVPN_PASSWORD=m -e CREATE_TUN_DEVICE=false -e LOCAL_NETWORK=192.168.0.0/16 -e PUID=1000 -e PGID=1000 -e TRANSMISSION_DOWNLOAD_DIR=/downloads -e GLOBAL_APPLY_PERMISSIONS=false --log-driver json-file --log-opt max-size=10m --privileged --device=/dev/net/tun -p 9091:9091 haugene/transmission-openvpn
+ExecReload=/bin/kill -s HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
+

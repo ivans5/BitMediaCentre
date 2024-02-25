@@ -27,33 +27,35 @@ Simple Media Centre PC Build Using [Fedora-IOT](https://getfedora.org/en/iot/)
 
 *here, 200 OK response means that the pod was accepted for scheduling by the cloud service*
 
-## (NEW) Try it first on a VM 
 
-Please see the [preview-vm](preview-vm) folder for more details!
-
-
-## (Bare Metal) Installation Steps:
-
-1. Install grub to a USB stick
-2. Copy the kickstart file, and the [Fedora-IOT](https://getfedora.org/en/iot/) iso (eg. Fedora-IoT-IoT-ostree-x86_64-33-20201102.0.iso) to the USB drive
-3. Edit the kickstart:
-  - wifi (search for "REDACTED")
-  - verify hard drive selection
-  - timezone
-  - enable optional features
-  - any other customisation (eg. kparam)
-4. Edit the grub.cfg and add something like:
+## (Bare Metal) Installation Steps (EFI):
+0. start with a blank USB stick, and download latest Fedora-IoT (OSTree, iso, x86_64) iso
+1. create GPT partition  table (gdisk or fdisk)
+2. create FAT32 partitions:
+   partition 1: size 500M, type 1 (EFT);  parition 2: type 11 (Microsoft basic)
+3. format FAT32 parition (mkfs.fat -F 32 /dev/sd?1)
+4. mount FAT32 parition (to /mnt)
+5. install grub2-efi-x64-modules.noarch
+6. grub2-install --target=x86_64-efi --efi-directory=/mnt --bootloader-id=BOOT  #(Note: Secure boot!)
+7. replace files in /EFI/BOOT with the one's from the ISO
+8. copy initrd.img and vmlinuz from /images/pxeboot/ from the iso to the /mnt 
+9. copy and modify the Kickstart file `NEW-KS.CFG` to /mnt:
+wifi (search for "REDACTED")  
+installation hard drive selection!
+timezone
+enable optional features  
+any other customisation (eg. kparam)  
+10. write the Fedora-IoT .iso file (eg. Fedora-IoT-ostree-x86_64-39-20231103.1.iso) to partition 2 of usb stick: dd if=bleh.iso of=/dev/sd?2 bs=1M status=progress
+11. Edit the grub.cfg on new EFI partition and add something like this entry:
 ```
-menuentry "[WARNING] NEW-KS.CFG" {
-        set root='(hd0,msdos1)'
-        set isofile='(hd0,msdos1)/Fedora-IoT-IoT-ostree-x86_64-33-20201102.0.iso'
-        loopback loop $isofile
-        linux (loop)/isolinux/vmlinuz inst.stage2=hd:LABEL=YourLabel:/Fedora-IoT-IoT-ostree-x86_64-33-20201102.0.iso nomodeset inst.ks=hd:LABEL=YourLabel:/NEW-KS.CFG
-        initrd (loop)/isolinux/initrd.img
+menuentry 'NEW-KS.CFG' --class fedora --class gnu-linux --class gnu --class os {
+        set root='(hd0,gpt1)'
+        linuxefi /vmlinuz inst.repo=hd:/dev/sda2 nomodeset inst.ks=hd:/dev/sda1:/NEW-KS.CFG
+        initrdefi /initrd.img
 }
-```
-,where `YourLabel` is the Label of the USB stick. Note: dont change the name of the .iso file it will cause problem.
 
-5. Boot the USB stick in the TARGET computer and choose the grub option from step #4 (CAUTION: Will wipe hard drive without prompting!!)
+```
+
+Finally, Boot the USB stick in the TARGET computer (by selecting the id specified in step#6) and choose the grub option from step #11 (*CAUTION:* Will wipe hard drive without prompting!!)
 
 
