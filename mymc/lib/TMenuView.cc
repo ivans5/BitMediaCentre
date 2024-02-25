@@ -214,6 +214,7 @@ ushort TMenuView::execute()
                     }
                 break;
             case  evKeyDown:
+                //printf("\n--%d--\n",ctrlToArrow(e.keyDown.keyCode));
                 switch( ctrlToArrow(e.keyDown.keyCode) )
                     {
                     case  kbUp:
@@ -239,6 +240,7 @@ ushort TMenuView::execute()
                                 trackKey(False);
                             }
                         break;
+                    case  32: //XXX - Space
                     case  kbEnter:
                         if( size.y == 1 )
                             autoSelect =  True;

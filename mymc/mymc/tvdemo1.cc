@@ -74,6 +74,11 @@ int main(int argc, char **argv)
 //   box with the appropriate search path.
 //
 
+
+//GLOBAL VARIABLE:
+char playableExtensions[5][10]; 
+int  numPlayableExtensions = 0;
+
 TVDemo::TVDemo( int argc, char **argv ) :
     TProgInit( &TVDemo::initStatusLine,
                &TVDemo::initMenuBar,
@@ -90,15 +95,32 @@ TVDemo::TVDemo( int argc, char **argv ) :
 
     r = getExtent();                            // Create the heap view.
     r.a.x = r.b.x - 13;     r.a.y = r.b.y - 1;
+    r.a.x -= 10; // XXX - feature: len("5.57G FREE")
     heap = new THeapView( r );
     insert(heap);
 
+
+//current args are now [0] => "-extensions" , and [1],[2],...[n] are playable file extensions without dot:
+
+
+    if (argc > 1 && !strcmp(argv[1], "-extensions")) {
+      --argc;++argv;
+
+      while (--argc > 0)                              // Display files specified
+          {                                           //  on command line.
+             sprintf(playableExtensions[numPlayableExtensions++],".%s",*++argv);
+          }
+    }
+
+        
+
+/* 
     while (--argc > 0)                              // Display files specified
         {                                           //  on command line.
         strcpy( fileSpec, *++argv );
         len = strlen( fileSpec );
 
-	/* SS: changed */
+	//XXX - * SS: changed *
 
         if( fileSpec[len-1] == '/' )
             strcat( fileSpec, "*" );
@@ -112,6 +134,7 @@ TVDemo::TVDemo( int argc, char **argv ) :
                 deskTop->insert(w);
             }
         }
+*/
 
 }
 

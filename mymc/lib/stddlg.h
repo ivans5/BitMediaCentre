@@ -9,6 +9,11 @@
  * Modified by Sergio Sigala <sergio@sigala.it>
  */
 
+// XXX
+#include <list>
+#include <dirent.h>
+
+
 #if !defined( __FILE_CMDS )
 #define __FILE_CMDS
 
@@ -1294,7 +1299,7 @@ public:
     * single-column list box with the given bounds and vertical scroll bar.
     * @see TListBox::TListBox
     */
-    MyTDirListBox( const TRect& bounds, TScrollBar *aScrollBar );
+    MyTDirListBox( const TRect& bounds, TScrollBar *aScrollBar, std::list<char *> theList );
     /**
      * Calls its base destructor to dispose of the list box.
      * @see TListBox::~TListBox
@@ -1364,6 +1369,11 @@ public:
     char dir[PATH_MAX];
     ushort cur;
     static const char * drives;
+    ushort theWidth = 0; //XXX
+    int endsWithFoo( char *string ); //XXX - to share list of extensins
+    std::list<dirent *> getListOfDirents(char *dir_); // XXX - to share list of extensions
+    std::list<char *> playableExtensions;
+    
 //protected:
     /**
      * Undocumented.
@@ -1633,12 +1643,12 @@ inline opstream& operator << ( opstream& os, TChDirDialog& cl )
 inline opstream& operator << ( opstream& os, TChDirDialog* cl )
     { return os << (TStreamable *)cl; }
 
-// XXX
+
 class MyTChDirDialog : public TDialog
 {
 public:
     friend class MyTDirListBox; //XXX
-    MyTChDirDialog( ushort aOptions, ushort histId );
+    MyTChDirDialog( ushort aOptions, ushort histId, std::list<char *> theList );
     virtual ushort dataSize();
     virtual void getData( void *rec );
     virtual void handleEvent( TEvent& );
@@ -1646,12 +1656,15 @@ public:
     virtual Boolean valid( ushort command );
     virtual void shutDown();
     void updateMyTDirListBox(); //XXX
+    //void setPlayableExtensions(std::list<char *> theExtensions);
+    //std::list<char *> getPlayableExtensions();
 private:
     void setUpDialog();
     TInputLine *dirInput;
     MyTDirListBox *dirList; //XXX
     TButton *okButton;
     TButton *chDirButton;
+    std::list<char *> theExtensions;
     static const char * changeDirTitle;
     static const char * dirNameText;
     static const char * dirTreeText;

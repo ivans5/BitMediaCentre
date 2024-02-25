@@ -32,8 +32,8 @@ public:
 
 private:
 
-    long oldMem, newMem;
-    char heapStr[16];
+    long oldMem, newMem; //hiJacked for free space-Change
+    char heapStr[16 + 14 /* free space feature */];
 
 };
 

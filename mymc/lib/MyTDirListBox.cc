@@ -32,11 +32,14 @@
 #include <limits.h>
 
 
-MyTDirListBox::MyTDirListBox( const TRect& bounds, TScrollBar *aScrollBar ) :
+MyTDirListBox::MyTDirListBox( const TRect& bounds, TScrollBar *aScrollBar, std::list<char *> theList ) :
     TListBox( bounds, 1, aScrollBar ),
     cur( 0 )
 {
+    //printf("bounds.a.x=%d bounds.a.y=%d bounds.b=x=%d, bounds.b.y=%d\n",bounds.a.x,bounds.a.y,bounds.b.x,bounds.b.y);
     *dir = EOS;
+    theWidth = bounds.b.x - bounds.a.x;
+    playableExtensions = theList;
 }
 
 MyTDirListBox::~MyTDirListBox()
@@ -45,10 +48,19 @@ MyTDirListBox::~MyTDirListBox()
       destroy( list() );
 }
 
-void MyTDirListBox::getText( char *text, short item, short maxChars )
+//XXX - Reverse Truncate to 37 chars and add a '$' to show it - TODO:clean up,maybe not here
+void MyTDirListBox::getText( char *text, short item, short maxChars ) 
 {
+    //short reducedMaxChars = maxChars - 9; //to account for the indentation of the folders...
+//printf("getText item=%d maxChars=%d",item,maxChars);
+    //short itemLength = strlen(list()->at(item)->text());
+
     strncpy( text, list()->at(item)->text(), maxChars );
     text[maxChars] = '\0';
+
+    //if ( itemLength >= reducedMaxChars )  {
+    //   strcpy( text, text + (itemLength - reducedMaxChars));
+    //}
 }
 
 void MyTDirListBox::selectItem( short item )
@@ -82,15 +94,32 @@ void MyTDirListBox::showDrives( TDirCollection* )
 }
 
 //#include <stdlib.h>     /* system, NULL, EXIT_FAILURE */ //XXX
-int endsWithFoo( char *string )
+int MyTDirListBox::endsWithFoo( char *string )
 {
   string = strrchr(string, '.');
 
   if( string != NULL )  {
-    //return( strcmp(string, ".mkv") );
-    //TODO: load this from the value of the "Extensions" TInputLine --> XXX makes navigation by arrow keys more difficult..
-    if(strcmp(string, ".mkv") == 0 || strcmp(string, ".mp4") == 0 || strcmp(string, ".avi") == 0)
-      return 0;
+/*
+    MyTChDirDialog *theOwner = (MyTChDirDialog *)owner;
+    std::list<char *> theList = theOwner->getPlayableExtensions();
+*/
+
+    //if ((((MyTChDirDialog *)owner)->theExtensions).size() > 0)   {
+    if (playableExtensions.size() > 0)  {
+        std::list<char *>::iterator it = playableExtensions.begin();
+        char *anExt;
+        while(it != playableExtensions.end())
+        {
+                        anExt = *it;
+                        it++;
+                        if (!strcmp(string, anExt))  {
+                          return 0;
+                        }
+        }
+    } else {
+      if(strcmp(string, ".mkv") == 0 || strcmp(string, ".mp4") == 0 || strcmp(string, ".avi") == 0)
+        return 0;
+    }
   }
 
   return( -1 );
@@ -114,7 +143,7 @@ int aria2_file_exist (char *path)
           return (stat (thepath, &buffer) == 0);
 }
 //XXX
-std::list<dirent *> getListOfDirents(char *dir_)
+std::list<dirent *> MyTDirListBox::getListOfDirents(char *dir_)
 {
 	DIR *dp;
 	char path[PATH_MAX];
@@ -136,7 +165,7 @@ std::list<dirent *> getListOfDirents(char *dir_)
 
                         //XXX - is it a mkv/mp4/avi file:
 			if (stat(path, &s) == 0 && !S_ISDIR(s.st_mode) &&
-                            endsWithFoo(de->d_name)==0 && 
+                            this->endsWithFoo(de->d_name)==0 && 
 			    !aria2_file_exist(path))  {
                           listOfDirents.push_back(de_heap);
                         }
@@ -146,7 +175,7 @@ std::list<dirent *> getListOfDirents(char *dir_)
                           {
                                   while ((de2 = readdir(dp2)) != NULL)
                                   {
-                                    if(endsWithFoo(de2->d_name)==0 &&
+                                    if(this->endsWithFoo(de2->d_name)==0 &&
                  			    !aria2_file_exist(path))  {
                                       listOfDirents.push_back(de_heap);
                                       break;
@@ -213,7 +242,7 @@ char *graphics = "\xC0\xC3\xC4";
 	char *end;
 	char *name = buf + sizeof(buf) / 2;
 	const int indentSize = 2;
-	int indent = 0, len;
+	int indent = 0, len, reducedSpace;
 
 	/* extract directories from path string */
 
@@ -245,6 +274,7 @@ char *graphics = "\xC0\xC3\xC4";
 	char path[PATH_MAX];
 	dirent *de;
 	struct stat s;
+        char *reducedPtr; //XXX
 
         //XXX Make list of dirents:
         std::list<dirent *> listOfDirents;
@@ -253,7 +283,7 @@ char *graphics = "\xC0\xC3\xC4";
         dirent *de2;
         char path2[PATH_MAX];
 
-        listOfDirents = getListOfDirents(dir);
+        listOfDirents = this->getListOfDirents(dir);
 
         /* XXX for sorting the contents of subdirectories alphabetticaly (readdir doesnt return in any order...) */
         char idata[250][250]; //for simplicity in this example
@@ -280,7 +310,7 @@ char *graphics = "\xC0\xC3\xC4";
 
                         //XXX - is it a mkv/mp4 file:
 			if (stat(path, &s) == 0 && !S_ISDIR(s.st_mode) &&
-                            endsWithFoo(de->d_name)==0)
+                            this->endsWithFoo(de->d_name)==0)
 			{
 				if (isFirst)
 				{
@@ -293,8 +323,14 @@ char *graphics = "\xC0\xC3\xC4";
 					strcpy(name, middleDir);
 					len = strlen(middleDir);
 				}
-				strcpy(name + len, de->d_name);
-                                //strcpy(name + len, "helloworld");
+                                //Reverse Truncation Case 1 - Loose File in home folder:
+                                reducedSpace = theWidth - 1 /* scrollBar */ - len - indent;
+                                reducedPtr = de->d_name + (strlen(de->d_name) - reducedSpace);
+                                if (strlen(de->d_name) > reducedSpace)  {
+				  strcpy(name + len, reducedPtr); //XXX
+                                } else {
+  				  strcpy(name + len, de->d_name); 
+                                }
 
 				dirs->insert(new TDirEntry(name - indent,
 					path));
@@ -307,7 +343,7 @@ char *graphics = "\xC0\xC3\xC4";
                           {
                                   while ((de2 = readdir(dp2)) != NULL)
                                   {
-                                    if(endsWithFoo(de2->d_name)==0)  
+                                    if(this->endsWithFoo(de2->d_name)==0)  
                                       count++;
                                   }
                           }
@@ -347,7 +383,7 @@ char *graphics = "\xC0\xC3\xC4";
 					len = strlen(middleDir2);
                                         strcpy(name + len, de->d_name);
                 			dirs->insert(new TDirEntry(name - indent,
-				   	   path2));
+				   	   path)); //XXX- was `path2`, this change will allow playing of entire folders at once...
                                       }
                                       //XXX    - insert: | |_ file name
                                       i++;
@@ -360,7 +396,14 @@ char *graphics = "\xC0\xC3\xC4";
                                       }
 				      len = strlen(selection);
                                       //DELETEME:strcpy(name + len, de2->d_name);
-                                      strcpy(name + len, de_d_name);
+                                      //Reverse Truncation Case 2 - File in Folder:
+                                      reducedSpace = theWidth - 1 /* scrollBar */ - len - indent;
+                                      reducedPtr = de_d_name + (strlen(de_d_name) - reducedSpace);
+                                      if (strlen(de_d_name) > reducedSpace) {
+                                        strcpy(name + len, reducedPtr);  //XXX
+                                      } else {
+                                        strcpy(name + len, de_d_name); 
+                                      }
                 	              dirs->insert(new TDirEntry(name - indent,
 				        path2));
                                     
@@ -424,7 +467,7 @@ void MyTDirListBox::doUpdate()
     //if (newListOfDirents != oldListOfDirents)  //<-- TODO??
     if (old_st_mtime != 0 && s1.st_mtime != old_st_mtime)
     {
-        //system("play -n -c1 synth 0.6 sine 500 >/dev/null 2>/dev/null");//XXX
+        system("play -n -c1 synth 0.6 sine 500 >/dev/null 2>/dev/null");//XXX - FEATURE: play beep upon folder update...
     	TDirCollection *dirs = new TDirCollection( 5, 5 );
     	showDirs( dirs ); //TODO: release memory from old TDirCollection?
     	newList( dirs );

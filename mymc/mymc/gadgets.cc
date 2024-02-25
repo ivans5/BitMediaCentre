@@ -62,12 +62,36 @@ void THeapView::draw()
 
 void THeapView::update()
 {
-    if( (newMem = heapSize()) != oldMem )
-        {
-        oldMem = newMem;
+    //if( (newMem = heapSize()) != oldMem )
+    //    {
+    //    oldMem = newMem;
+        newMem = heapSize();  //<-- TODO: only call drawView if free space has changed:
         drawView();
-        }
+   //     }
 }
+
+//XXX -free space feature
+#include <stdio.h>
+#include <sys/statvfs.h>
+double getAvailableSpace()  {  //arg is "/" - https://gist.github.com/vgerak/8539104
+    const unsigned int GB = (1024 * 1024) * 1024;
+    struct statvfs buffer;
+    int ret = statvfs("/" /* argv[1] */, &buffer);
+
+    if (!ret) {
+        const double total = (double)(buffer.f_blocks * buffer.f_frsize) / GB;
+        const double available = (double)(buffer.f_bfree * buffer.f_frsize) / GB;
+        const double used = total - available;
+        const double usedPercentage = (double)(used / total) * (double)100;
+        return available;
+        //printf("Total: %f --> %.0f\n", total, total);
+        //printf("Available: %f --> %.0f\n", available, available);
+        //printf("Used: %f --> %.1f\n", used, used);
+        //printf("Used Percentage: %f --> %.0f\n", usedPercentage, usedPercentage);
+    }
+    return -1.0;
+}
+
 
 long THeapView::heapSize()
 {
@@ -123,12 +147,16 @@ long THeapView::heapSize()
         // Program exits if file pointer returns NULL.
         //exit(1);
 	strcpy(heapStr, "ID: UNKNOWN");
+        return -1;
     }
 
     // reads text until newline is encountered
     fscanf(fptr, "%[^\n]", c);
     fclose(fptr);
-    sprintf(heapStr, "ID: %s", c);
+
+    double freeSpace = getAvailableSpace();
+
+    sprintf(heapStr, "ID: %s %.02fG FREE", c, freeSpace);
 	return -1;
 }
 
@@ -164,7 +192,10 @@ void TClockView::update()
     char *date = ctime(&t);
 
     date[19] = '\0';
-    strcpy(curTime, &date[11]);        /* Extract time. */
+    char tmpCurTime[9];
+
+    strcpy(tmpCurTime, &date[11]);        /* Extract time. */
+    sprintf(curTime,"%s",tmpCurTime);
 
     if( strcmp(lastTime, curTime) )
         {

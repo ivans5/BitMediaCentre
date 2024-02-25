@@ -147,7 +147,7 @@ void TVDemo::idle()
             myTChDirDialog->updateMyTDirListBox();
         }
         
-        //heap->update(); //XXX
+        heap->update(); // XXX - used by free space feature now...
     }
 
    if (deskTop->firstThat(isTileable, 0) != 0 )
@@ -195,6 +195,19 @@ void TVDemo::loadDesktop(fpstream &s)
 // Menubar initialization.
 //
 //XXX
+
+// Helper: Function to check if a string ends with a specific suffix
+int endsWith(const char *str, const char *suffix) {
+    size_t str_len = strlen(str);
+    size_t suffix_len = strlen(suffix);
+
+    if (str_len < suffix_len) {
+        return 0;  // String is shorter than the suffix, can't match
+    }
+
+    return strcmp(str + str_len - suffix_len, suffix) == 0;
+}
+
 extern std::map<int, std::string> youtubeScripts;
 TMenuBar *TVDemo::initMenuBar(TRect r)
 {
@@ -205,7 +218,7 @@ TMenuBar *TVDemo::initMenuBar(TRect r)
         *new TMenuItem( "~A~bout...", cmAboutCmd, kbNoKey, hcSAbout ) +
          newLine() +
         *new TMenuItem( "~P~uzzle", cmPuzzleCmd, kbNoKey, hcSPuzzle ) +
-        *new TMenuItem( "Ca~l~endar", cmCalendarCmd, kbNoKey, hcSCalendar ) +
+        //*new TMenuItem( "Ca~l~endar", cmCalendarCmd, kbNoKey, hcSCalendar ) +
         *new TMenuItem( "Ascii ~T~able", cmAsciiCmd, kbNoKey, hcSAsciiTable ) +
         *new TMenuItem( "~C~alculator", cmCalcCmd, kbNoKey, hcCalculator );
 
@@ -242,7 +255,7 @@ TMenuBar *TVDemo::initMenuBar(TRect r)
     {
       while ((de = readdir(dp)) != NULL)  
       {
-         if (strlen(de->d_name) > 2)  {
+         if (strlen(de->d_name) > 2 && endsWith(de->d_name, ".sh"))  {
              youtubeScripts[cmYoutubeCmd + i] = de->d_name;
              //std::cout << youtubeScripts[cmYoutubeCmd + i] << std::endl ;
              sub5 = sub5 + *new TMenuItem( de->d_name, cmYoutubeCmd + i, kbNoKey, hcNoContext);

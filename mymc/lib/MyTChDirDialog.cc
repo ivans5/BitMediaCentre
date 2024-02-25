@@ -9,6 +9,7 @@
  * Modified by Sergio Sigala <sergio@sigala.it>
  */
 
+#define Uses_TScreen
 #define Uses_MsgBox
 #define Uses_MyTChDirDialog
 #define Uses_TChDirDialog
@@ -35,15 +36,29 @@
 
 //XXX- for system():
 #include <stdlib.h>
-//XXX
+//XXX - for customizable extensions feature:
+#include <list>
 class TDeskTop;
 
-MyTChDirDialog::MyTChDirDialog( ushort opts, ushort histId ) :
+//uchar TScreen::screenWidth;
+
+
+int margin=10;
+
+MyTChDirDialog::MyTChDirDialog( ushort opts, ushort histId, std::list<char *> theList ) :
 //    TDialog( TRect( 16, 2, 64, 20 ), changeDirTitle ),
 //    TDialog( TRect( 0,0,64,20 ), "Play video"),
-    TDialog( TRect( 0,0,64,18 ), "Play video"),
+    //TDialog( TRect( 0,0,64,18 ), "Play video"),
+    //TDialog( TRect( 0,0,64,18 ), "Play video"),
+    TDialog( TRect( 0,0,TScreen::screenWidth - margin,TScreen::screenHeight - margin ), "Play video"),
     TWindowInit( &MyTChDirDialog::initFrame )
 {
+
+int width= TScreen::screenWidth - margin;
+int height = TScreen::screenHeight - margin;
+
+
+//printf("TScreen::screenWidth is %d\n",TScreen::screenWidth);
     options |= ofCentered;
 
     dirInput = new TInputLine( TRect( 3, 3, 30, 4 ), 68 );
@@ -52,19 +67,40 @@ MyTChDirDialog::MyTChDirDialog( ushort opts, ushort histId ) :
     //insert( new TLabel( TRect( 2+1, 2, 17+1, 3 ), "Extensions", dirInput ));
 //    insert( new THistory( TRect( 30, 3, 33, 4 ), dirInput, histId ) );
     insert( new TStaticText( TRect( 2+2, 2, 17+2, 3 ), "Extensions:"));
-    insert( new TStaticText( TRect( 2+2, 3, 17+2, 4 ), "mkv,mp4,avi"));
+//XXX - optionally show the join list of playableExtensions
+    if (theList.size()>0)  {
+        char s[255] = "";
+        std::list<char *>::iterator it = theList.begin();
+        char *anExt;
+        while(it != theList.end())
+        {
+                        anExt = *it;
+                        it++;
+                        strcat(s,anExt);
+                        if (strcmp(anExt,theList.back()))  {
+                          strcat(s,",");
+                        }
+        }
+        //s[strlen(s)-2]=0;  //remove trailing comma
+        insert( new TStaticText( TRect( 2+2, 3, 30+2, 4 ), s)); //XXX -width of element increased...
+    } else {
+        insert( new TStaticText( TRect( 2+2, 3, 17+2, 4 ), "mkv,mp4,avi"));
+    }
 
-    TScrollBar *sb = new TScrollBar( TRect( 32+16, 6, 33+16, 16 ) );
+    
+    int finderWidth=width-32;
+    //TODO: int finderHeight=...
+    TScrollBar *sb = new TScrollBar( TRect( finderWidth+16, 6, finderWidth+1+16, 16 ) );
     insert( sb );
     //dirList = new MyTDirListBox( TRect( 3, 6, 32, 16 ), sb );
-    dirList = new MyTDirListBox( TRect( 3, 6, 32+16, 16 ), sb );
+    dirList = new MyTDirListBox( TRect( 3, 6, finderWidth+16, 16 ), sb, theList );
     insert( dirList );
     insert( new TLabel( TRect( 2+1, 5, 17+1, 6 ), dirTreeText, dirList ) );
 
     //XXX
     //okButton = new TButton( TRect( 35, 6, 45, 8 ), okText, cmOK, bfDefault );
     //insert( okButton );
-    chDirButton = new TButton( TRect( 35+16, 9, 45+16, 11 ), "Play", cmChangeDir, bfNormal );
+    chDirButton = new TButton( TRect( finderWidth+3+16, 9, finderWidth+13+16, 11 ), "Play", cmChangeDir, bfNormal );
     insert( chDirButton );
     //insert( new TButton( TRect( 35, 12, 45, 14 ), revertText, cmRevert, bfNormal ) ); //XXX
     if( (opts & cdHelpButton) != 0 )
@@ -73,6 +109,19 @@ MyTChDirDialog::MyTChDirDialog( ushort opts, ushort histId ) :
         setUpDialog();
     selectNext( False );
 }
+
+/*
+void MyTChDirDialog::setPlayableExtensions(std::list<char *> someExtensions)
+{
+   //printf("HERE size is %d\n",someExtensions.size());
+   this->theExtensions = someExtensions;
+   //printf("HERE size is %d\n",this->theExtensions.size());
+}
+std::list<char *> MyTChDirDialog::getPlayableExtensions() {
+   return this->theExtensions;
+}
+*/
+
 
 ushort MyTChDirDialog::dataSize()
 {
@@ -95,17 +144,19 @@ void MyTChDirDialog::getData( void * )
 
 void MyTChDirDialog::handleEvent( TEvent& event )
 {
+    char origCurDir[PATH_MAX]; //XXX - used for bugfix
+    getCurDir( origCurDir );
+
     TDialog::handleEvent( event );
     switch( event.what )
         {
         case evCommand:
             {
-            char curDir[PATH_MAX];
+            char curDir[PATH_MAX]; 
             char command[PATH_MAX]; //XXX
             switch( event.message.command )
                 {
                 case cmRevert:
-                    //getCurDir( curDir ); //XXX
                     break;
                 case cmChangeDir:
                     {
@@ -116,8 +167,22 @@ void MyTChDirDialog::handleEvent( TEvent& event )
 //                            strcat( curDir, "/" );
 //printf("curDir=%s\n",curDir);
 //sprintf(command,"/bin/bash -c 'set -a; . /env.sh;/usr/bin/nice -20 /usr/bin/mpv --ontop \"%s\"'", curDir);
-sprintf(command,"/usr/bin/mpv -fs --title=mpvFullscreen \"%s\"  > /tmp/mpv.log 2> /tmp/mpv.log.stderr |cat", curDir);
-system(command);
+
+//XXX - bugfix - dont execute comand on home folder, 
+//NOTE: origCurDir(WORKING_DIRECTORY) has a slash on the end ,so we compare by strlen:
+if ( strlen(curDir)+1 != strlen(origCurDir))  {  
+  const char *variableName = "MPV_EXTRA_OPTS";
+  const char *variableValue = getenv(variableName);
+  char extraOpts[255] = "";
+ 
+  if (variableValue != NULL) {
+    strcpy(extraOpts, variableValue);
+  }
+
+  sprintf(command,"/usr/bin/mpv %s -fs --title=mpvFullscreen \"%s\"  > /tmp/mpv.log 2> /tmp/mpv.log.stderr |cat", extraOpts, curDir);
+  //printf("command is %s origcurDir is %s\n",command,origCurDir);
+  system(command);
+}
 /*
  * TODO: figure out how to redraw everything...
  */
@@ -191,7 +256,7 @@ void MyTChDirDialog::setUpDialog()
             } 
         */
     } 
-    strcpy(dirInput->data, "mkv,mp4");
+    //strcpy(dirInput->data, "mkv,mp4");
 }
 
 static int changeDir( const char *path )

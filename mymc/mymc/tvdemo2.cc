@@ -204,6 +204,7 @@ void TVDemo::asciiTable()
 
 void TVDemo::calendar()
 {
+/*
     TCalendarWindow *cal = (TCalendarWindow *) validView(new TCalendarWindow);
 
     if(cal != 0)
@@ -211,6 +212,7 @@ void TVDemo::calendar()
         cal->helpCtx = hcCalendar;
         deskTop->insert( cal );
     }
+*/
 }
 
 
@@ -245,11 +247,26 @@ void TVDemo::cascade()
 //
 
 
+extern char playableExtensions[5][10];
+extern int  numPlayableExtensions ;
+
 void TVDemo::changeDir()
 {
     //XXX
+    //printf("HERE, extension1 is %s\n",playableExtensions[0]);
     //TView *d = validView( new TChDirDialog( 0, cmChangeDir ) );
-    myTChDirDialog = new MyTChDirDialog( 0, cmChangeDir );
+    //
+    std::list<char *> listOfExtensions;  //promote to std::list to send along ...
+    if (numPlayableExtensions>0)  {
+        int i;
+        for (i=0;i<numPlayableExtensions;i++)  {
+          listOfExtensions.push_back(playableExtensions[i]);
+        }
+
+        //myTChDirDialog->setPlayableExtensions(listOfExtensions);  
+    }
+    myTChDirDialog = new MyTChDirDialog( 0, cmChangeDir, listOfExtensions );
+
     //TView *d = validView( new MyTChDirDialog( 0, cmChangeDir ) );
     TView *d = validView( myTChDirDialog );
 

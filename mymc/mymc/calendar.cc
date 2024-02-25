@@ -72,7 +72,9 @@ void *TCalendarView::read( ipstream& is )
 
 TStreamable *TCalendarView::build()
 {
+/*
     return new TCalendarView( streamableInit );
+*/
 }
 
 
@@ -276,6 +278,8 @@ TCalendarWindow::TCalendarWindow() :
     TWindow( TRect(1, 1, 23, 11), "Calendar", wnNoNumber ),
     TWindowInit( &TCalendarWindow::initFrame )
 {
+// DISABLE OR NOW
+/*
     TRect r(getExtent());
 
     flags &= ~(wfZoom | wfGrow);
@@ -285,4 +289,5 @@ TCalendarWindow::TCalendarWindow() :
 
     r.grow(-1, -1);
     insert( new TCalendarView( r ));
+*/
 }

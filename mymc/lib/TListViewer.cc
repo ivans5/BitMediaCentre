@@ -129,6 +129,7 @@ void TListViewer::draw()
             if( item < range )
                 {
                 char text[256];
+                //printf("calling getText with value : %d + %d\n",colWidth , indent);
                 getText( text, item, colWidth + indent );
                 char buf[256];
                 memmove( buf, text+indent, colWidth );

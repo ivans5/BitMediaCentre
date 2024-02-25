@@ -22,6 +22,7 @@
 
 #include <limits.h>
 
+
 /**
  * This value controls the size of the shadow effect available on those views
  * with the sfShadow bit set. The shadow is usually a thin, dark region

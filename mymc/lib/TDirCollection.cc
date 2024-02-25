@@ -78,7 +78,12 @@ void getCurDir( char *dir )
 
 	//getcwd(dir, PATH_MAX);
         char * pwdvalue = getenv("WORKING_DIRECTORY");
-        strcpy(dir, pwdvalue);
+
+        if ( pwdvalue != NULL ) {
+          strcpy(dir, pwdvalue);
+        } else {
+          strcpy(dir, "/homepcuser"); //default value
+        }
 
 	if (strcmp(dir, "/") != 0) strcat(dir, "/");
 }
