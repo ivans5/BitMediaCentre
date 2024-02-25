@@ -1,10 +1,12 @@
 %define _topdir 	%(echo $PWD)/rpmbuild
 %define _pwd            %(echo $PWD)
 %define name 		bitmediacentre-base
-%define release 	el6
-%define version		1.0
+%define release 	bmc
+%define version		1.1
 %define buildroot %{_topdir}/%{name}-%{version}-root
+%define _unpackaged_files_terminate_build 0
 
+BuildArch:  x86_64
 BuildRoot: %{buildroot}
 Summary:	bitmediacentre-base
 License:	GPL
@@ -27,6 +29,7 @@ mkdir -p $RPM_BUILD_ROOT/etc/systemd/system/
 mkdir -p $RPM_BUILD_ROOT/lib/systemd/system-preset/
 mkdir -p $RPM_BUILD_ROOT/etc/sway/config.d/
 mkdir -p $RPM_BUILD_ROOT/usr/start/youtube
+mkdir -p $RPM_BUILD_ROOT/usr/start/youtube/resources
 mkdir -p $RPM_BUILD_ROOT/usr/start/bin
 mkdir -p $RPM_BUILD_ROOT/usr/start/etc
 mkdir -p $RPM_BUILD_ROOT/etc/NetworkManager/dispatcher.d/
@@ -37,6 +40,7 @@ cp %{_pwd}/bitmediacentre-start.sh $RPM_BUILD_ROOT/usr/start/bin/
 cp %{_pwd}/compositor2@7.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/terminal.timer $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/terminal.service $RPM_BUILD_ROOT/etc/systemd/system/
+cp %{_pwd}/terminal.sh $RPM_BUILD_ROOT/usr/start/bin/
 cp %{_pwd}/mysway.cfg $RPM_BUILD_ROOT/usr/start/etc/
 cp %{_pwd}/mydbus.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/mydbus.socket $RPM_BUILD_ROOT/etc/systemd/system/
@@ -47,8 +51,10 @@ cp %{_pwd}/setup-gnome-terminal.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/install-upgrade-youtube-dl.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/rc.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/myevemu-device.service $RPM_BUILD_ROOT/etc/systemd/system/
+cp %{_pwd}/set-sink-volume.service $RPM_BUILD_ROOT/etc/systemd/system/
 cp %{_pwd}/fakekeyboard.prop $RPM_BUILD_ROOT/usr/start/etc/
 cp %{_pwd}/youtube-dl/*.sh $RPM_BUILD_ROOT/usr/start/youtube
+cp %{_pwd}/youtube-dl/resources/* $RPM_BUILD_ROOT/usr/start/youtube/resources
 cp %{_pwd}/../mymc/mymc/mymc $RPM_BUILD_ROOT/usr/start/bin/
 cp %{_pwd}/rc-server2.py $RPM_BUILD_ROOT/usr/start/bin/
 cp %{_pwd}/00rcserver $RPM_BUILD_ROOT/etc/NetworkManager/dispatcher.d/
@@ -78,8 +84,10 @@ exit 0 #https://stackoverflow.com/questions/30317213/how-to-remove-pyo-anc-pyc-f
 /etc/systemd/system/setup-gnome-terminal.service
 /etc/systemd/system/install-upgrade-youtube-dl.service
 /etc/systemd/system/configure-firewalld.service
+/etc/systemd/system/set-sink-volume.service
 /usr/start/etc/mysway.cfg
 /usr/start/youtube/*.sh
+/usr/start/youtube/resources/*
 /usr/start/bin/mymc
 /usr/start/bin/rc-server2.py
 /usr/start/etc/fakekeyboard.prop
@@ -87,6 +95,7 @@ exit 0 #https://stackoverflow.com/questions/30317213/how-to-remove-pyo-anc-pyc-f
 /usr/start/bin/setup-gnome-terminal.sh
 /usr/start/bin/configure-firewalld.sh
 /usr/start/bin/bitmediacentre-start.sh
+/usr/start/bin/terminal.sh
 /usr/start/etc/env.sh
 /etc/NetworkManager/dispatcher.d/00rcserver
 /etc/mytransmission-daemon/settings.json

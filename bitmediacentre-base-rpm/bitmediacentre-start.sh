@@ -11,7 +11,7 @@
 #Note: according https://www.freedesktop.org/wiki/Software/PulseAudio/FAQ/
 #XDG_RUNTIME_DIR is supposed to be on ramdisk!
 
-rm -rf /tmp/xdg_runtime_dir
+rm -rf /tmp/xdg_runtime_dir  
 mkdir -p /tmp/xdg_runtime_dir
 chown pcuser:pcuser /tmp/xdg_runtime_dir
 chmod 700 /tmp/xdg_runtime_dir

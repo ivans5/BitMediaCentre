@@ -1,9 +1,10 @@
 [Unit]
 
 [Service]
-Type=oneshot
+Type=simple
+Restart=no
 EnvironmentFile=/env.sh
-#TODO: figure out if this WAYLAND_DISPLAY should originate from elsewhere?
-ExecStart=/bin/bash -c 'WAYLAND_DISPLAY=wayland-1 /usr/bin/gnome-terminal --zoom=$(dmesg|grep vboxguest >/dev/null && echo 1.0 || echo 3.0) --hide-menubar -- /usr/start/bin/mymc'
+ExecStart=/usr/start/bin/terminal.sh
 WorkingDirectory=/home/pcuser
 User=pcuser
+

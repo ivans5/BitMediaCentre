@@ -3,7 +3,7 @@ After=network-online.target
 
 [Service]
 Type=oneshot
-ExecStart=/bin/pip3 install --upgrade youtube-dl
+ExecStart=/bin/pip3 install --upgrade yt-dlp
 
 [Install]
 WantedBy=graphical.target

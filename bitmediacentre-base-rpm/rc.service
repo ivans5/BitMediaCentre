@@ -1,5 +1,6 @@
 [Unit]
 Requires=myevemu-device.service
+After=network-online.target
 
 [Service]
 ExecStart=/bin/python3 /usr/start/bin/rc-server2.py

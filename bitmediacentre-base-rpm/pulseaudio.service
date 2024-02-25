@@ -13,6 +13,11 @@ After=bitmediacentre-start.service
 ExecStart=/usr/bin/pulseaudio --daemonize=no --log-target=stderr --enable-memfd=false --exit-idle-time=-1
 EnvironmentFile=/env.sh
 User=pcuser
+#hdmi volume too low: #https://forums.developer.nvidia.com/t/how-to-set-hdmi-audio-volume-through-alsamixer/107133/3
+#TODO: DELETEME: Sink not present at boot-time if the TV is not on:
+#ExecStartPost=/bin/bash -c 'sleep 10 && /usr/bin/pactl set-sink-volume alsa_output.pci-0000_00_1f.3.hdmi-stereo 150%'
+
+
 
 [Install]
 WantedBy=graphical.target
