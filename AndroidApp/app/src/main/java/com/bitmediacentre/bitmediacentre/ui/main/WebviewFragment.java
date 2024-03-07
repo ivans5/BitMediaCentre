@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 //import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
@@ -173,7 +174,6 @@ public class WebviewFragment extends Fragment {
             }
         });
 
-        /*
         OnBackPressedCallback callback = new OnBackPressedCallback(true ) {
             @Override
             public void handleOnBackPressed() {
@@ -186,7 +186,7 @@ public class WebviewFragment extends Fragment {
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(this, callback);
-         */
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             WebView.setWebContentsDebuggingEnabled(true);

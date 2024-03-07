@@ -10,5 +10,6 @@ WORKING_DIRECTORY=/homepcuser
 XDG_SEAT=seat0
 XDG_SESSION_TYPE=tty
 DBUS_SESSION_BUS_ADDRESS=unix:path=/tmp/xdg_runtime_dir/bus
-MPV_EXTRA_OPTS="-vo gpu-next --hwdec=vaapi" #for kabi lake 4k playback
+#for kabi lake 4k playback:
+MPV_EXTRA_OPTS="-vo gpu-next --hwdec=vaapi"
 #WAYLAND_DISPLAY=wayland-1
