@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">BitMediaCentre</string>
-    <string name="tab_text_1">RC</string>
-    <string name="tab_text_2">Browser</string>
-    <string name="tab_text_3">Settings</string>
+    <string name="tab_text_1">Keyboard</string>
+    <string name="tab_text_2">Mouse</string>
+    <string name="tab_text_3">Browser</string>
+    <string name="tab_text_4">Settings</string>
 </resources>

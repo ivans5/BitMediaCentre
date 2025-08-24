@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 
 import com.bitmediacentre.bitmediacentre.ui.main.SectionsPagerAdapter;
 
@@ -25,10 +26,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
-        ViewPager viewPager = findViewById(R.id.view_pager);
+        final CustomViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                //Toast.makeText(getApplicationContext(), "onPageSelected: position="+position, Toast.LENGTH_SHORT).show();
+
+                if (position == 1) {  // Example: Disable swipe for Tab 2
+                    viewPager.setSwipeEnabled(false);
+                } else {
+                    viewPager.setSwipeEnabled(true);
+                }
+            }
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
 
         /*
         FloatingActionButton fab = findViewById(R.id.fab);
